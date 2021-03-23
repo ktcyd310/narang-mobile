@@ -1,4 +1,6 @@
 import { FETCH_PRODUCTS_SUCCESS } from "../actions/productActions";
+import { SET_SORTING } from "../actions/sortingListActions";
+
 const initState = {};
 
 const productReducer = (state = initState, action) => {
@@ -8,6 +10,16 @@ const productReducer = (state = initState, action) => {
       products: action.payload
     };
   }
+
+  if (action.type === SET_SORTING){
+
+
+
+    return {
+
+    }
+  }
+
   return state;
 };
 

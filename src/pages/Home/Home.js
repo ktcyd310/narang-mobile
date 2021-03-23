@@ -2,7 +2,7 @@ import React from "react";
 import {
   HeroSlider,
   CategorySlider,
-  BestSellerProduct,
+  EventList,
   AllProducts
 } from "../../components";
 
@@ -12,11 +12,15 @@ const Home = () => {
       {/* hero slider */}
       <HeroSlider />
       {/* category slider */}
-      <CategorySlider />
+      <div>
+      </div>
+      {/*<CategorySlider />*/}
       {/* best seller products */}
-      <BestSellerProduct limit="2" type="bestSeller" />
-      {/* all products */}
-      <AllProducts limit="12" />
+      <EventList limit="4" eventCategory="event01_list" />
+      <EventList limit="4" eventCategory="event02_list" />
+
+        {/* all products */}
+      {/*<AllProducts limit="12" />*/}
     </div>
   );
 };

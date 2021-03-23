@@ -36,7 +36,6 @@ class Header extends Component {
         <div className="header-wrapper border-bottom">
           <div className="container space-y--15">
             <div className="row align-items-center">
-              <div className="col-auto">
                 {/* header logo */}
                 <div className="header-logo">
                   <Link to={process.env.PUBLIC_URL + "/home"}>
@@ -46,7 +45,6 @@ class Header extends Component {
                       alt=""
                     />
                   </Link>
-                </div>
               </div>
               <div className="col d-flex justify-content-center">
                 {/* header search */}

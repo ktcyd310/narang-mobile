@@ -20,7 +20,8 @@ class HeroSlider extends Component {
 
   getHeroSliderData() {
     axios
-      .get(process.env.PUBLIC_URL + "/data/hero-slider.json")
+        .get(process.env.PUBLIC_URL + "/data/hero-slider.json")
+        //      .get(process.env.REACT_APP_API_URL + "/display/banner?display_area=home")
       .then(response =>
         this.setState({
           heroSliderData: response.data,
@@ -56,7 +57,7 @@ class HeroSlider extends Component {
         content = <ErrorMessage errorMessage={errorMessage} />;
       } else {
         content = (
-          <div className="hero-slider bg-color--grey space-y--10">
+          <div className="hero-slider space-y--15">
             <div className="container">
               <div className="row row-10">
                 <div className="col-12">
@@ -64,6 +65,7 @@ class HeroSlider extends Component {
                     <Swiper {...params}>
                       {heroSliderData &&
                         heroSliderData.map(single => {
+                          // noinspection CheckTagEmptyBody
                           return (
                             <div key={single.id}>
                               <div
@@ -73,24 +75,6 @@ class HeroSlider extends Component {
                                     .PUBLIC_URL + single.image})`
                                 }}
                               >
-                                <div className="container">
-                                  <div className="row">
-                                    <div className="col-12">
-                                      {/* hero slider content */}
-                                      <div className="hero-slider-content">
-                                        <h2
-                                          className="hero-slider-content__title space-mb--10"
-                                          dangerouslySetInnerHTML={{
-                                            __html: single.title
-                                          }}
-                                        ></h2>
-                                        <p className="hero-slider-content__text">
-                                          {single.subtitle}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
                               </div>
                             </div>
                           );

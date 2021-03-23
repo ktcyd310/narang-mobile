@@ -49,15 +49,6 @@ class Shop extends Component {
         <div className="shop-header bg-color--grey">
           <div className="container space-y--15">
             <div className="row align-items-center">
-              <div className="col-3">
-                <Link
-                  to={process.env.PUBLIC_URL + "/home"}
-                  className="back-link"
-                >
-                  {" "}
-                  <FaAngleLeft /> Back
-                </Link>
-              </div>
               <div className="col-6">
                 <h4 className="category-title text-center">
                   {sortType === "category" || ""

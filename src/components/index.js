@@ -5,7 +5,7 @@ import Preloader from "./Preloader";
 import ErrorMessage from "./ErrorMessage";
 import HeroSlider from "./HeroSlider";
 import CategorySlider from "./CategorySlider";
-import BestSellerProduct from "./BestSellerProduct";
+import EventList from "./EventList";
 import AllProducts from "./AllProducts";
 import ShopProducts from "./ShopProducts";
 import SearchProducts from "./SearchProducts";
@@ -19,7 +19,7 @@ export {
   ErrorMessage,
   HeroSlider,
   CategorySlider,
-  BestSellerProduct,
+  EventList,
   AllProducts,
   ShopProducts,
   SearchProducts,

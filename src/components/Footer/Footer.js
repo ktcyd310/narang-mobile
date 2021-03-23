@@ -14,7 +14,7 @@ const Footer = () => {
             <ReactSVG
               src={process.env.PUBLIC_URL + "/assets/img/icons/home.svg"}
             />
-            <span>Home</span>
+            <span>홈</span>
           </div>
         </Link>
         <Link
@@ -23,9 +23,9 @@ const Footer = () => {
         >
           <div className="menu-wrapper">
             <ReactSVG
-              src={process.env.PUBLIC_URL + "/assets/img/icons/chat.svg"}
+              src={process.env.PUBLIC_URL + "/assets/img/icons/phone.svg"}
             />
-            <span>Chat</span>
+            <span>통신사</span>
           </div>
         </Link>
         <Link
@@ -36,7 +36,7 @@ const Footer = () => {
             <ReactSVG
               src={process.env.PUBLIC_URL + "/assets/img/icons/cart.svg"}
             />
-            <span>Cart</span>
+            <span>커머스</span>
           </div>
         </Link>
         <Link
@@ -47,7 +47,7 @@ const Footer = () => {
             <ReactSVG
               src={process.env.PUBLIC_URL + "/assets/img/icons/profile.svg"}
             />
-            <span>Profile</span>
+            <span>My</span>
           </div>
         </Link>
       </div>
