@@ -7,7 +7,7 @@ import { ReactSVG } from "react-svg";
 import { getDiscountPrice } from "../../helpers/product";
 import {getOemProductLists } from "../../helpers/oemProductList"
 import { getsortingLists } from "../../helpers/sortingList"
-import { setSortingDispatch } from "../../redux/actions/sortingListActions"
+import { getFilteredProductListDispatch } from "../../redux/actions/oemProductListActions"
 
 import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 import commaNumber from "../../utils/commaNumber"
@@ -28,7 +28,7 @@ class ShopProducts extends Component {
 
 
   render() {
-    const { oemProductList, sortingList, setSorting } = this.props;
+    const { oemProductList, sortingList, getFilteredProductList, filter } = this.props;
     const { listActivate } = this.state;
     return (
       <div className="shop-products-area">
@@ -46,7 +46,7 @@ class ShopProducts extends Component {
                       sortingList && sortingList.map(single => {
 
                         return(
-                            <Dropdown.Item onClick={() => setSorting(single.CODE_VALUE2, single.CODE_VALUE3)} >{single.CODE_VALUE1}</Dropdown.Item>
+                            <Dropdown.Item onClick={() => getFilteredProductList(filter, single.CODE_VALUE2, single.CODE_VALUE3)} >{single.CODE_VALUE1}</Dropdown.Item>
                         )
                       })
                     }
@@ -165,8 +165,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setSorting: (value1,value2) => {
-      dispatch(setSortingDispatch(value1, value2));
+    //TODO : 필터 추가 작업 해야함
+    getFilteredProductList: (filter, value1,value2) => {
+      dispatch(getFilteredProductListDispatch(filter, value1, value2));
     }
   };
 };
