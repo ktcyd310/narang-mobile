@@ -64,6 +64,21 @@ export const toggleShopTopFilter = e => {
   e.currentTarget.classList.toggle("active");
 };
 
+// 1depth 필터
+export const toggle1depthFilter = e => {
+  const depthFilterWrapper = document.querySelector("#top-filter-menu");
+  depthFilterWrapper.classList.toggle("active");
+  if (depthFilterWrapper.style.height) {
+    depthFilterWrapper.style.height = null;
+  } else {
+    depthFilterWrapper.style.height =
+        document.querySelector("#shop-filter-menu").scrollHeight + "px";
+  }
+  e.currentTarget.classList.toggle("active");
+};
+
+
+
 // get individual element
 const getIndividualItemArray = array => {
   let individualItemArray = array.filter(function(v, i, self) {

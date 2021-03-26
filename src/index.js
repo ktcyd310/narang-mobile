@@ -8,6 +8,7 @@ import { fetchProducts } from "./redux/actions/productActions";
 import { fetchEventList } from "./redux/actions/eventListActions";
 import { fetchOemProductList, fetchOemSortedProductList } from "./redux/actions/oemProductListActions"
 import { fetchsortingList } from "./redux/actions/sortingListActions"
+import { fetchListFilter } from "./redux/actions/filterListActions";
 
 
 import rootReducer from "./redux/reducers/rootReducer";
@@ -50,6 +51,10 @@ axios
     .then(response => store.dispatch(fetchFilter(response.data)))
     .catch(error => console.log(error));
 
+axios
+    .get(process.env.PUBLIC_URL + "/data/filterList.json")
+    .then(response => store.dispatch(fetchListFilter(response.data)))
+    .catch(error => console.log(error));
 
 
 

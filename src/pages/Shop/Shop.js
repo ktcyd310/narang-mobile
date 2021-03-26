@@ -8,8 +8,9 @@ import {
   getIndividualCategories,
   getIndividualColors,
   setActiveSort,
-  getSortedProducts
+  getSortedProducts, toggle1depthFilter
 } from "../../helpers/product";
+import {Dropdown, DropdownButton} from "react-bootstrap";
 
 class Shop extends Component {
   constructor(props) {
@@ -38,11 +39,31 @@ class Shop extends Component {
   };
 
   render() {
-    const { products } = this.props;
+    const { products, filterData, filterList } = this.props;
     const { getSortParams } = this;
     const { finalSortedProducts, sortType, sortValue } = this.state;
-    const uniqueCategories = getIndividualCategories(products);
-    const uniqueColors = getIndividualColors(products);
+
+    // 5G 요금제 그룹
+    const subscriptionGroup = filterList.subscription_group_list.filter(
+        subscriptionGroup => subscriptionGroup.NETWORK_TYPE_CODE === '5G'
+    )
+
+    const lteSubscriptionGroup = filterList.subscription_group_list.filter(
+        lteSubscriptionGroup => lteSubscriptionGroup.NETWORK_TYPE_CODE === 'LTE'
+    )
+
+    const codeCategoryNames = {
+      company_code_list: '제조사',
+      factory_price_list: '출고가',
+      plan_type_list: '공시선약',
+      installment_term_list: '할부개월'
+    }
+
+    const companyCodes = filterList.company_code_list.filter(
+        companyCodes => companyCodes.NETWORK_TYPE_CODE === 'LTE'
+    )
+
+    let topFilter = ''
 
     return (
       <div className="body-wrapper space-pt--70 space-pb--120">
@@ -74,75 +95,89 @@ class Shop extends Component {
               <div className="row">
                 <div className="col-12">
                   <div className="shop-filter-block space-mb--25">
-                    <h4 className="shop-filter-block__title space-mb--15">
-                      Colors
-                    </h4>
                     <div className="shop-filter-block__content">
-                      {uniqueColors ? (
-                        <ul className="shop-filter-block__color">
-                          {uniqueColors.map((color, key) => {
-                            return (
-                              <li key={key}>
-                                <button
-                                  className={`${color}`}
-                                  onClick={e => {
-                                    getSortParams("color", color);
-                                    setActiveSort(e);
-                                  }}
-                                ></button>
-                              </li>
-                            );
-                          })}
-                          <li>
-                            <button
-                              onClick={e => {
-                                getSortParams("color", "");
-                                setActiveSort(e);
-                              }}
-                            >
-                              X
-                            </button>
-                          </li>
-                        </ul>
-                      ) : (
-                        "No colors found"
-                      )}
-                    </div>
+                      <div className="shop-filter-1depth">
+                          {
+                            Object.entries(codeCategoryNames).map(([key,value]) => {
+
+                              return (
+
+                                  <DropdownButton
+                                      className="dropdown-button"
+                                      size="sm"
+                                      //                      variant="secondary"
+                                      title={value}
+                                  >
+                                    {
+                                      filterList[key] && filterList[key].map(single => {
+
+                                        return(
+                                            <Dropdown.Item clasName="dropdown-item" onClick={() =>
+                                                console.log(single.CODE_VALUE2)
+
+                                            }>
+                                              {single.CODE_VALUE1}
+                                            </Dropdown.Item>
+                                        )
+                                      })
+                                    }
+                                  </DropdownButton>
+
+                              );
+                            })
+                          }
+                      </div>
                   </div>
+                  {/*요금제 그룹 영역*/}
                   <div className="shop-filter-block">
                     <h4 className="shop-filter-block__title space-mb--15">
-                      Categories
+                      5G 요금제 가격대
                     </h4>
                     <div className="shop-filter-block__content">
-                      {uniqueCategories ? (
-                        <ul className="shop-filter-block__category">
-                          <li>
-                            <button
-                              onClick={e => {
-                                getSortParams("category", "");
-                                setActiveSort(e);
-                              }}
-                            >
-                              All
-                            </button>
-                          </li>
-                          {uniqueCategories.map((category, key) => {
-                            return (
-                              <li key={key}>
-                                <button
-                                  onClick={e => {
-                                    getSortParams("category", category);
-                                    setActiveSort(e);
-                                  }}
-                                >
-                                  {category}
-                                </button>
-                              </li>
-                            );
-                          })}
-                        </ul>
+                      {subscriptionGroup ? (
+                          <ul className="shop-filter-block__category">
+                            {subscriptionGroup.map((e) => {
+                              return (
+                                  <li key={e.SUBSCRIPTION_GROUP_ID}>
+                                    <button
+                                        onClick={e => {
+                                          getSortParams("category", e.SUBSCRIPTION_GROUP_ID);
+                                          setActiveSort(e);
+                                        }}
+                                    >
+                                      {e.SUBSCRIPTION_GROUP_NAME}
+                                    </button>
+                                  </li>
+                              );
+                            })}
+                          </ul>
                       ) : (
-                        "No categories found"
+                          "No categories found"
+                      )}
+                    </div>
+                    <h4 className="shop-filter-block__title space-mb--15">
+                      LTE 요금제 가격대
+                    </h4>
+                    <div className="shop-filter-block__content">
+                      {lteSubscriptionGroup ? (
+                          <ul className="shop-filter-block__category">
+                            {lteSubscriptionGroup.map((e) => {
+                              return (
+                                  <li key={e.SUBSCRIPTION_GROUP_ID}>
+                                    <button
+                                        onClick={e => {
+                                          getSortParams("category", e.SUBSCRIPTION_GROUP_ID);
+                                          setActiveSort(e);
+                                        }}
+                                    >
+                                      {e.SUBSCRIPTION_GROUP_NAME}
+                                    </button>
+                                  </li>
+                              );
+                            })}
+                          </ul>
+                      ) : (
+                          "No categories found"
                       )}
                     </div>
                   </div>
@@ -154,6 +189,7 @@ class Shop extends Component {
 
         {/* shop products */}
         <ShopProducts products={finalSortedProducts} />
+        </div>
       </div>
     );
   }
@@ -161,8 +197,10 @@ class Shop extends Component {
 
 const mapStateToProps = state => {
   return {
+    filterData: state.filterData.filter,
     products: state.productData.products,
-    wishlistItems: state.wishlistData
+    wishlistItems: state.wishlistData,
+    filterList: state.filterList.filter
   };
 };
 

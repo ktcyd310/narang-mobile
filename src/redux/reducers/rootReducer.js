@@ -6,6 +6,7 @@ import { combineReducers } from "redux";
 import oemProductListReducer from "./oemProductListReducer";
 import sortingListReducer from "./sortingListReducer";
 import filterReducer from "./filterReducer";
+import filterListReducer from "./filterListReducer";
 
 const rootReducer = combineReducers({
   productData: productReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   eventListData: eventListReducer,
   oemProductListData: oemProductListReducer,
   sortingListData: sortingListReducer,
-  filterData: filterReducer
+  filterData: filterReducer,
+  filterList: filterListReducer
 });
 
 export default rootReducer;
