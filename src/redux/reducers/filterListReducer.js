@@ -1,4 +1,5 @@
 import { FETCH_FILTER_LIST_SUCCESS } from "../actions/filterListActions";
+
 const initState = {};
 
 const filterListReducer = (state = initState, action) => {

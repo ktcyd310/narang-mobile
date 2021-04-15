@@ -13,6 +13,7 @@ import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 import commaNumber from "../../utils/commaNumber"
 import {Dropdown, DropdownButton, ButtonGroup} from "react-bootstrap";
 import {getFilter} from "../../helpers/filter";
+import {changeFilterDataDispatch} from "../../redux/actions/filterActions";
 //import Dropdown from 'react-overlays/Dropdown';
 
 
@@ -26,9 +27,17 @@ class ShopProducts extends Component {
     };
   }
 
+  // Filter 로딩 후 데이터 재로딩을 위함
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.filter != this.props.filter){
+      this.props.getFilteredProductList(this.props.filter)
+    }
+  }
+
+
 
   render() {
-    const { oemProductList, sortingList, getFilteredProductList, filter } = this.props;
+    const { oemProductList, sortingList, getFilteredProductList, filter , setSortingFilter} = this.props;
     const { listActivate } = this.state;
     return (
       <div className="shop-products-area">
@@ -46,7 +55,11 @@ class ShopProducts extends Component {
                       sortingList && sortingList.map(single => {
 
                         return(
-                            <Dropdown.Item onClick={() => getFilteredProductList(filter, single.CODE_VALUE2, single.CODE_VALUE3)} >{single.CODE_VALUE1}</Dropdown.Item>
+                            <Dropdown.Item onClick={() => {
+                              setSortingFilter(single.CODE_VALUE2, single.CODE_VALUE3, filter)
+
+                            }
+                            } >{single.CODE_VALUE1}</Dropdown.Item>
                         )
                       })
                     }
@@ -155,7 +168,7 @@ const mapStateToProps = state => {
     ),
     sortingList: getsortingLists(
         state.sortingListData.sortingList,
-        state.filterData.filter[0].plan_type
+        state.filterData.filter.plan_type
     ),
     filter: getFilter(
         state.filterData.filter
@@ -165,9 +178,18 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    //TODO : 필터 추가 작업 해야함
-    getFilteredProductList: (filter, value1,value2) => {
-      dispatch(getFilteredProductListDispatch(filter, value1, value2));
+
+    setSortingFilter: (value1, value2, filter) => {
+
+      let data = {
+        sorting_field: value1,
+        sorting_way: value2
+      }
+
+      dispatch(changeFilterDataDispatch('sorting', data));
+    },
+    getFilteredProductList: (filter) => {
+      dispatch(getFilteredProductListDispatch(filter,));
     }
   };
 };

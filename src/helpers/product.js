@@ -51,32 +51,73 @@ export const getProductCartQuantity = (cartItems, product, color) => {
   }
 };
 
+
 // shop top filter toggle
 export const toggleShopTopFilter = e => {
   const shopTopFilterWrapper = document.querySelector("#shop-filter-menu");
-  shopTopFilterWrapper.classList.toggle("active");
+  const subscriptionFilterWrapper = document.querySelector("#subscription-menu");
+
+  // 확장된 영역을 축소시키는 케이스
   if (shopTopFilterWrapper.style.height) {
+    shopTopFilterWrapper.style.overflow = 'hidden'
+
+    e.currentTarget.classList.remove('active')
+    e.currentTarget.classList.toggle('disabled')
+
     shopTopFilterWrapper.style.height = null;
+
+    // 확장 케이스
   } else {
+
+    shopTopFilterWrapper.style.overflow = 'visible'
+
+    e.currentTarget.classList.remove('disabled')
+    e.currentTarget.classList.toggle("active");
     shopTopFilterWrapper.style.height =
       shopTopFilterWrapper.scrollHeight + "px";
+
+    //요금제 필터 축소
+    subscriptionFilterWrapper.style.height = null;
+
   }
-  e.currentTarget.classList.toggle("active");
 };
 
-// 1depth 필터
-export const toggle1depthFilter = e => {
-  const depthFilterWrapper = document.querySelector("#top-filter-menu");
-  depthFilterWrapper.classList.toggle("active");
-  if (depthFilterWrapper.style.height) {
-    depthFilterWrapper.style.height = null;
+// 요금제 필터
+export const toggleSubscriptionFilter = e => {
+  const shopTopFilterWrapper = document.querySelector("#shop-filter-menu");
+  const subscriptionFilterWrapper = document.querySelector("#subscription-menu");
+
+  subscriptionFilterWrapper.classList.toggle("active");
+
+  // 확장된 영역을 축소시키는 케이스
+  if (subscriptionFilterWrapper.style.height) {
+    subscriptionFilterWrapper.style.height = null;
+
+    // 확장 케이스
   } else {
-    depthFilterWrapper.style.height =
-        document.querySelector("#shop-filter-menu").scrollHeight + "px";
+    subscriptionFilterWrapper.style.height =
+        document.querySelector("#subscription-menu").scrollHeight + "px";
+
+    //필터 축소
+    shopTopFilterWrapper.style.height = null;
+    shopTopFilterWrapper.style.overflow = 'hidden';
   }
   e.currentTarget.classList.toggle("active");
 };
 
+export const subscriptionFilterButton = (en, value) => {
+
+  let buttons = document.querySelectorAll("#subscription-filter-button")
+  buttons.forEach(item => {
+    item.classList.remove("active")
+  })
+
+  en.currentTarget.classList.toggle("active");
+
+  let text = document.querySelector("#filter-text")
+  text.innerText = value
+  text.innerHTML = value
+};
 
 
 // get individual element

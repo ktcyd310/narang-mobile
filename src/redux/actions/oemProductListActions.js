@@ -23,25 +23,14 @@ const fetchOemSortedProductListSuccess = (oemSortedProductList) => ({
 });
 
 // fetch products
-export const getFilteredProductListDispatch = (filter, sortingField, sortingWay) => {
+export const getFilteredProductListDispatch = (filter) => {
 
     const parameter = {
-        company_code: 'SAMSUNG,LG,APPLE,ETC',
-        factory_price_min: 100000,
-        factory_price_max: 2500000,
-        subscription_group_id: 1,
-        plan_type: 'SUPPORT',
-        sorting_field: sortingField,
-        sorting_way: sortingWay,
+        ...filter,
+        //sorting_field: sortingField,
+        //sorting_way: sortingWay,
         search_tag: ''
     }
-
-    //let url = 'http://localhost:3001/api/v1'
-
-    // axios
-    //     .get( process.env.REACT_APP_API_URL + "/product/list", {params: parameter} )
-    //     .then(response => dispatch => dispatch(fetchProducts(response.data)))
-    //     .catch(error => console.log(error));
 
     return async dispatch => {
 
