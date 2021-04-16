@@ -34,30 +34,31 @@ function App() {
       <ScrollToTop>
         <Suspense fallback={<Preloader />}>
           <Switch>
-            <Route
+            <AppRoute
               path={process.env.PUBLIC_URL + "/"}
               exact
-              component={Welcome}
+              component={Shop}
+              layout={DefaultLayout}
             />
-            <Route
-              path={process.env.PUBLIC_URL + "/welcome"}
-              component={Welcome}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/register"}
-              component={Register}
-            />
-            <Route path={process.env.PUBLIC_URL + "/login"} component={Login} />
+            {/*<Route*/}
+            {/*  path={process.env.PUBLIC_URL + "/welcome"}*/}
+            {/*  component={Welcome}*/}
+            {/*/>*/}
+            {/*<Route*/}
+            {/*  path={process.env.PUBLIC_URL + "/register"}*/}
+            {/*  component={Register}*/}
+            {/*/>*/}
+            {/*<Route path={process.env.PUBLIC_URL + "/login"} component={Login} />*/}
             <AppRoute
               path={process.env.PUBLIC_URL + "/home"}
               component={Home}
               layout={DefaultLayout}
             />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/shop"}
-              component={Shop}
-              layout={DefaultLayout}
-            />
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/shop"}*/}
+            {/*  component={Shop}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
             <AppRoute
               path={process.env.PUBLIC_URL + "/product/:id"}
               component={Product}

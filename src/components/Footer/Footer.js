@@ -7,7 +7,7 @@ const Footer = () => {
     <footer>
       <div className="footer-nav-wrapper">
         <Link
-          to={process.env.PUBLIC_URL + "/home"}
+          to={process.env.PUBLIC_URL + "/"}
           className="footer-nav-single"
         >
           <div className="menu-wrapper">

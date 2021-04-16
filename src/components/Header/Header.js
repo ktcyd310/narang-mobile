@@ -63,17 +63,17 @@ class Header extends Component {
                   </form>
                 </div>
               </div>
-              <div className="col-auto">
-                {/* header menu trigger */}
-                <button
-                  className="header-menu-trigger"
-                  onClick={e => this.handleClickOffcanvas(e)}
-                >
-                  <ReactSVG
-                    src={process.env.PUBLIC_URL + "/assets/img/icons/menu.svg"}
-                  />
-                </button>
-              </div>
+              {/*<div className="col-auto">*/}
+              {/*  /!* header menu trigger *!/*/}
+              {/*  <button*/}
+              {/*    className="header-menu-trigger"*/}
+              {/*    onClick={e => this.handleClickOffcanvas(e)}*/}
+              {/*  >*/}
+              {/*    <ReactSVG*/}
+              {/*      src={process.env.PUBLIC_URL + "/assets/img/icons/menu.svg"}*/}
+              {/*    />*/}
+              {/*  </button>*/}
+              {/*</div>*/}
             </div>
           </div>
         </div>

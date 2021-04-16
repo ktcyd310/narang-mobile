@@ -74,7 +74,7 @@ export const toggleShopTopFilter = e => {
     e.currentTarget.classList.remove('disabled')
     e.currentTarget.classList.toggle("active");
     shopTopFilterWrapper.style.height =
-      shopTopFilterWrapper.scrollHeight + "px";
+      shopTopFilterWrapper.children[0].clientHeight + "px";
 
     //요금제 필터 축소
     subscriptionFilterWrapper.style.height = null;
@@ -117,6 +117,21 @@ export const subscriptionFilterButton = (en, value) => {
   let text = document.querySelector("#filter-text")
   text.innerText = value
   text.innerHTML = value
+};
+
+// product 필터
+export const productFilterButton = (en, value) => {
+
+  let buttons = document.querySelectorAll("#product-filter-button")
+
+  //en.currentTarget.parentNode.previousElementSibling.classList[0].toggle("active");
+
+  //dropdown menu 삭제
+  en.currentTarget.parentNode.classList.remove("show")
+  en.currentTarget.parentNode.classList.toggle("hide")
+
+  en.currentTarget.parentNode.previousElementSibling.innerHTML = value
+
 };
 
 

@@ -607,7 +607,7 @@
 .shop-filter {
     overflow: hidden;
 
-    height: 0;
+    height: 0px;
 
     transition: height 0.4s ease-in-out;
 
@@ -1014,9 +1014,18 @@
             display: block;
             width: 10%;
         }
+        .dropdown-menu.hide{
+            position: absolute;
+            width: 10%;
+            height: 0;
+        }
         .dropdown-menu{
             z-index: 9;
             width: 20%;
+            height: 0;
+        }
+        .dropdown-item.hide{
+            height:0;
         }
 
     }
@@ -1065,10 +1074,10 @@
     .dropdown-menu{
         z-index: 99;
         position: relative;
-        height: 130px;
         overflow: auto;
         display: inline-block;
         x-placement:"top-start";
+        height: auto;
     }
     .dropdown-item{
         overflow: auto;

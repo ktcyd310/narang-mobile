@@ -2,6 +2,11 @@
   "company_code_list": [
     {
       "CODE_CATEGORY_NAME": "제조사",
+      "CODE_VALUE1": "제조사 전체",
+      "CODE_VALUE2": "ALL"
+    },
+    {
+      "CODE_CATEGORY_NAME": "제조사",
       "CODE_VALUE1": "Apple",
       "CODE_VALUE2": "APPLE"
     },

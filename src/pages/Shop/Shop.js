@@ -8,7 +8,7 @@ import {
   getIndividualCategories,
   getIndividualColors,
   setActiveSort,
-  getSortedProducts, toggle1depthFilter, toggleSubscriptionFilter, subscriptionFilterButton
+  getSortedProducts, toggle1depthFilter, toggleSubscriptionFilter, subscriptionFilterButton, productFilterButton
 } from "../../helpers/product";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import {ReactSVG} from "react-svg";
@@ -17,6 +17,7 @@ import {getFilteredProductListDispatch} from "../../redux/actions/oemProductList
 import { changeFilterDataDispatch } from "../../redux/actions/filterActions";
 import PropTypes from "prop-types";
 import {getFilter} from "../../helpers/filter";
+import { Slider } from '@material-ui/core';
 
 class Shop extends Component {
   constructor(props) {
@@ -49,10 +50,10 @@ class Shop extends Component {
     )
 
     const codeCategoryNames = {
-      company_code_list: '제조사',
-      factory_price_list: '출고가',
-      plan_type_list: '공시선약',
-      installment_term_list: '할부개월'
+      company_code_list: '제조사 전체',
+      //factory_price_list: '출고가',
+      plan_type_list: '공시지원'
+      //installment_term_list: '24개월 할부'
     }
 
     const companyCodes = filterList.company_code_list.filter(
@@ -172,18 +173,24 @@ class Shop extends Component {
                             return (
 
                                 <DropdownButton
+                                    id = "product-filter-button"
                                     className="dropdown-button"
                                     size="sm"
                                     //                      variant="secondary"
                                     title={value}
                                 >
+
                                   {
                                     filterList[key] && filterList[key].map(single => {
 
                                       return(
-                                          <Dropdown.Item className="dropdown-item" onClick={() =>
-                                              console.log(single.CODE_VALUE2)
+                                          <Dropdown.Item id = "dropdown-item" className="dropdown-item" onClick={(en) => {
+                                            console.log(single.CODE_VALUE2)
+                                            // 드롭다운 타이틀 바꾸는 부분
+                                            productFilterButton(en, single.CODE_VALUE1);
+                                            // Dropdown height 축소
 
+                                          }
                                           }>
                                             {single.CODE_VALUE1}
                                           </Dropdown.Item>
