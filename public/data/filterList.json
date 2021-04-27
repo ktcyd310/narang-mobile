@@ -186,32 +186,32 @@
   "installment_term_list": [
     {
       "CODE_CATEGORY_NAME": "할부개월수",
-      "CODE_VALUE1": "12개월",
+      "CODE_VALUE1": "12개월 할부",
       "CODE_VALUE2": "12"
     },
     {
       "CODE_CATEGORY_NAME": "할부개월수",
-      "CODE_VALUE1": "18개월",
+      "CODE_VALUE1": "18개월 할부",
       "CODE_VALUE2": "18"
     },
     {
       "CODE_CATEGORY_NAME": "할부개월수",
-      "CODE_VALUE1": "24개월",
+      "CODE_VALUE1": "24개월 할부",
       "CODE_VALUE2": "24"
     },
     {
       "CODE_CATEGORY_NAME": "할부개월수",
-      "CODE_VALUE1": "30개월",
+      "CODE_VALUE1": "30개월 할부",
       "CODE_VALUE2": "30"
     },
     {
       "CODE_CATEGORY_NAME": "할부개월수",
-      "CODE_VALUE1": "36개월",
+      "CODE_VALUE1": "36개월 할부",
       "CODE_VALUE2": "36"
     },
     {
       "CODE_CATEGORY_NAME": "할부개월수",
-      "CODE_VALUE1": "48개월",
+      "CODE_VALUE1": "48개월 할부",
       "CODE_VALUE2": "48"
     }
   ],

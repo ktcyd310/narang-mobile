@@ -64,7 +64,7 @@ class Shop extends Component {
 
     return (
       <div className="body-wrapper space-pt--70 space-pb--120">
-        <div className="shop-header bg-color--grey">
+        <div className="shop-header bg-color--white">
           <div className="container space-y--15">
             <div className="row align-items-center">
               <div className="col">
@@ -185,10 +185,14 @@ class Shop extends Component {
 
                                       return(
                                           <Dropdown.Item id = "dropdown-item" className="dropdown-item" onClick={(en) => {
-                                            console.log(single.CODE_VALUE2)
                                             // 드롭다운 타이틀 바꾸는 부분
                                             productFilterButton(en, single.CODE_VALUE1);
-                                            // Dropdown height 축소
+
+                                            //리스트 재조회를 위한 Action
+                                            //설정된 필터의 요금제 값을 바꾸는 부분
+                                            // key : company_code_list or plan_type_list
+                                            changeFilter(key, single.CODE_VALUE2);
+
 
                                           }
                                           }>

@@ -18,6 +18,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import axios from "axios";
 import "./env.js"
 import {fetchFilter} from "./redux/actions/filterActions";
+import filterReducer from "./redux/reducers/filterReducer";
+
 
 const store = createStore(
   rootReducer,
@@ -37,11 +39,6 @@ axios
     .catch(error => console.log(error));
 
 axios
-    .get(process.env.PUBLIC_URL + "/data/oemProductList.json")
-    .then(response => store.dispatch(fetchOemProductList(response.data)))
-    .catch(error => console.log(error));
-
-axios
     .get(process.env.PUBLIC_URL + "/data/sortingList.json")
     .then(response => store.dispatch(fetchsortingList(response.data)))
     .catch(error => console.log(error));
@@ -56,6 +53,11 @@ axios
     .then(response => store.dispatch(fetchListFilter(response.data)))
     .catch(error => console.log(error));
 
+axios
+    //.get(process.env.PUBLIC_URL + "/data/oemProductList.json")
+    .get( process.env.REACT_APP_API_URL + "/product/list", {params: ""} )
+    .then(response => store.dispatch(fetchOemProductList(response.data)))
+    .catch(error => console.log(error));
 
 
 ReactDOM.render(

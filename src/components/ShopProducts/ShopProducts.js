@@ -86,6 +86,16 @@ class ShopProducts extends Component {
 
             return (
 
+                <Link
+                    to={{pathname: process.env.PUBLIC_URL + `/product/${single.PRODUCT_GROUP_ID}`,
+                      param:{
+                        product_group_id:single.PRODUCT_GROUP_ID,
+                        subscription_ids:single.SUBSCRIPTION_IDS,
+                        installment_term:single.INSTALLMENT_TERM,
+                        plan_type:this.props.filter.plan_type_list
+                      }}}
+                >
+
                   <div className="container">
                     <div
                       className="list-product"
@@ -104,11 +114,9 @@ class ShopProducts extends Component {
 
                       <div className="list-product__content">
                         <h3 className="title">
-                          <Link
-                            to={process.env.PUBLIC_URL + `/product/${single.PRODUCT_GROUP_ID}`}
-                          >
+
                             {single.PRODUCT_GROUP_NAME}
-                          </Link>
+
                         </h3>
                         <h5 className="description">
                           월 납부금 (24개월 할부)
@@ -143,6 +151,8 @@ class ShopProducts extends Component {
                       </div>
                     </div>
                   </div>
+
+                </Link>
               );
             })}
         </div>
@@ -168,7 +178,7 @@ const mapStateToProps = state => {
     ),
     sortingList: getsortingLists(
         state.sortingListData.sortingList,
-        state.filterData.filter.plan_type
+        state.filterData.filter.plan_type_list
     ),
     filter: getFilter(
         state.filterData.filter

@@ -134,6 +134,18 @@ export const productFilterButton = (en, value) => {
 
 };
 
+// product 필터
+export const planTypeButton = (en) => {
+
+  let buttons = document.querySelectorAll("#plan-type-tab")
+  buttons.forEach(item => {
+    item.classList.remove("active")
+  })
+
+};
+
+
+
 
 // get individual element
 const getIndividualItemArray = array => {

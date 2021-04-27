@@ -1,9 +1,9 @@
 {
-  "companyCode": "ALL",
+  "company_code": "ALL",
   "factory_price_min": 100000,
   "factory_price_max": 2500000,
   "subscription_group_id": 1,
-  "plan_type": "SUPPORT",
+  "plan_type_list": "SUPPORT",
   "sorting_field": "RELEASE_DATE",
   "sorting_way": "DESC"
 }
