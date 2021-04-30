@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory, withRouter } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
 import { getDiscountPrice } from "../../helpers/product";
@@ -14,6 +14,8 @@ import commaNumber from "../../utils/commaNumber"
 import {Dropdown, DropdownButton, ButtonGroup} from "react-bootstrap";
 import {getFilter} from "../../helpers/filter";
 import {changeFilterDataDispatch} from "../../redux/actions/filterActions";
+import {setDetailParam} from "../../redux/actions/detailParamActions";
+
 //import Dropdown from 'react-overlays/Dropdown';
 
 
@@ -34,11 +36,15 @@ class ShopProducts extends Component {
     }
   }
 
-
+  routeChange = (single) => {
+    //let history = useHistory();
+    this.props.history.push(process.env.PUBLIC_URL + `/product/detail`)
+  }
 
   render() {
     const { oemProductList, sortingList, getFilteredProductList, filter , setSortingFilter} = this.props;
     const { listActivate } = this.state;
+
     return (
       <div className="shop-products-area">
         {/* shop layout switcher */}
@@ -84,17 +90,29 @@ class ShopProducts extends Component {
               const ktMonthlyFee = single.KT_MONTHLY_FEE? `${commaNumber(single.KT_MONTHLY_FEE)}원` : `결과없음`;
               const lguMonthlyFee = single.LGU_MONTHLY_FEE? `${commaNumber(single.LGU_MONTHLY_FEE)}원` : `결과없음`;
 
+              let param={
+                    product_group_id:single.PRODUCT_GROUP_ID,
+                    subscription_ids:single.SUBSCRIPTION_IDS,
+                    installment_term:single.INSTALLMENT_TERM,
+                    plan_type:this.props.filter.plan_type_list
+              }
+
             return (
 
-                <Link
-                    to={{pathname: process.env.PUBLIC_URL + `/product/${single.PRODUCT_GROUP_ID}`,
-                      param:{
-                        product_group_id:single.PRODUCT_GROUP_ID,
-                        subscription_ids:single.SUBSCRIPTION_IDS,
-                        installment_term:single.INSTALLMENT_TERM,
-                        plan_type:this.props.filter.plan_type_list
-                      }}}
-                >
+                // <Link
+                //     to={{pathname: process.env.PUBLIC_URL + `/product/${single.PRODUCT_GROUP_ID}`,
+                //       param:{
+                //         product_group_id:single.PRODUCT_GROUP_ID,
+                //         subscription_ids:single.SUBSCRIPTION_IDS,
+                //         installment_term:single.INSTALLMENT_TERM,
+                //         plan_type:this.props.filter.plan_type_list
+                //       }}}
+                //     onclick={this.props.setDetailParam}
+                // >
+                  <a onClick={() => {
+                    this.props.setDetailParam(param)
+                    this.routeChange(single)
+                  }}>
 
                   <div className="container">
                     <div
@@ -152,7 +170,9 @@ class ShopProducts extends Component {
                     </div>
                   </div>
 
-                </Link>
+                  </a>
+
+                //</Link>
               );
             })}
         </div>
@@ -200,8 +220,12 @@ const mapDispatchToProps = dispatch => {
     },
     getFilteredProductList: (filter) => {
       dispatch(getFilteredProductListDispatch(filter,));
+    },
+
+    setDetailParam: (param) => {
+      dispatch(setDetailParam(param))
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopProducts);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShopProducts));

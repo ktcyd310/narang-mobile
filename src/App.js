@@ -14,6 +14,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Home = lazy(() => import("./pages/Home"));
 const Shop = lazy(() => import("./pages/Shop"));
 const Product = lazy(() => import("./pages/Product"));
+const Estimate = lazy(() => import("./pages/Estimate"));
 const Chat = lazy(() => import("./pages/Chat"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
@@ -65,60 +66,65 @@ function App() {
               layout={DefaultLayout}
             />
             <AppRoute
-              path={process.env.PUBLIC_URL + "/chat"}
-              component={Chat}
-              layout={DefaultLayout}
+                path={process.env.PUBLIC_URL + "/estimate/:id"}
+                component={Estimate}
+                layout={DefaultLayout}
             />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/cart"}
-              component={Cart}
-              layout={DefaultLayout}
-            />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/wishlist"}
-              component={Wishlist}
-              layout={DefaultLayout}
-            />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/checkout"}
-              component={Checkout}
-              layout={DefaultLayout}
-            />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/not-found"}
-              component={NotFound}
-              layout={DefaultLayout}
-            />
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/chat"}*/}
+            {/*  component={Chat}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/cart"}*/}
+            {/*  component={Cart}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/wishlist"}*/}
+            {/*  component={Wishlist}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/checkout"}*/}
+            {/*  component={Checkout}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/not-found"}*/}
+            {/*  component={NotFound}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
             <AppRoute
               path={process.env.PUBLIC_URL + "/search"}
               component={Search}
               layout={DefaultLayout}
             />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/profile"}
-              component={Profile}
-              layout={DefaultLayout}
-            />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/edit-profile"}
-              component={EditProfile}
-              layout={DefaultLayout}
-            />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/notification"}
-              component={Notification}
-              layout={DefaultLayout}
-            />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/contact"}
-              component={Contact}
-              layout={DefaultLayout}
-            />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/order"}
-              component={Order}
-              layout={DefaultLayout}
-            />
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/profile"}*/}
+            {/*  component={Profile}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/edit-profile"}*/}
+            {/*  component={EditProfile}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/notification"}*/}
+            {/*  component={Notification}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/contact"}*/}
+            {/*  component={Contact}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/order"}*/}
+            {/*  component={Order}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
             <AppRoute exact component={NotFound} layout={DefaultLayout} />
           </Switch>
         </Suspense>

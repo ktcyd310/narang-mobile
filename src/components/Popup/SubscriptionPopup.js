@@ -1,6 +1,12 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import Popup from 'reactjs-popup';
+import PropTypes from "prop-types";
+import {addToCartDispatch} from "../../redux/actions/cartActions";
+import {addToWishlistDispatch} from "../../redux/actions/wishlistActions";
+import {fetchDetailParam, setDetailParam} from "../../redux/actions/detailParamActions";
+import {connect} from "react-redux";
+import {Preloader} from "../index";
 
 class SubscriptionPopup extends Component {
     constructor(props) {
@@ -26,8 +32,35 @@ class SubscriptionPopup extends Component {
             );
     }
 
+    subscriptionParamChange(carrierOmdCode, subscriptionId) {
+
+        let subscriptionList = this.props.detailParam.subscription_ids.split(',')
+
+        switch(carrierOmdCode){
+            case 'SKT':
+                subscriptionList[0] = subscriptionId
+                break;
+            case 'KT':
+                subscriptionList[1] = subscriptionId
+                break;
+            case 'LGU':
+                subscriptionList[2] = subscriptionId
+                break;
+        }
+
+        let subscription_ids = subscriptionList.join()
+
+        let param = {
+            ...this.props.detailParam,
+            subscription_ids : subscription_ids
+        }
+
+        this.props.setDetailParam(param)
+    }
+
     render() {
         const { heroSliderData, isLoading, errorMessage } = this.state;
+        const { detailParamChange } = this.props
 
         let subscriptionList =''
         if(this.state.data){
@@ -35,7 +68,8 @@ class SubscriptionPopup extends Component {
         }else{
             return (
                 <div>
-                    Not Found
+                    <Preloader />;
+
                 </div>
             )
         }
@@ -46,8 +80,12 @@ class SubscriptionPopup extends Component {
                     <ul className="list-group">
                         {subscriptionList.map(single => {
                             return (
-                                <li className="list-group-item">{single.SUBSCRIPTION_NAME}
-                                </li>
+                                <button type="button" className="list-group-item list-group-item-action" onClick={() => {
+                                    this.subscriptionParamChange(this.props.param.carrier_omd_code, single.SUBSCRIPTION_ID)
+                                }}>
+                                    {single.SUBSCRIPTION_NAME}
+                                </button>
+
                             )
                         })}
 
@@ -58,4 +96,24 @@ class SubscriptionPopup extends Component {
     }
 }
 
-export default SubscriptionPopup;
+SubscriptionPopup.propTypes = {
+    subscriptionList: PropTypes.array,
+};
+
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        subscriptionList: state.detailParamData.subscriptionList,
+        detailParam: state.detailParamData.detailParam
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setDetailParam: (param) => {
+            dispatch(setDetailParam(param))
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubscriptionPopup);

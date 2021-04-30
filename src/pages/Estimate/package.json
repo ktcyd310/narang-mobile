@@ -1,0 +1,5 @@
+{
+  "name": "estimate",
+  "private": true,
+  "main": "./Estimate.js"
+}

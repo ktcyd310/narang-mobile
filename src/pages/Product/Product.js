@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Swiper from "react-id-swiper";
 import { ReactSVG } from "react-svg";
 import { Rating } from "../../components";
-
+import { Link, useHistory, withRouter } from "react-router-dom";
 import {
   getDiscountPrice,
   getProductCartQuantity, productFilterButton, planTypeButton
@@ -17,6 +17,8 @@ import axios from "axios";
 import ReactLoading from 'react-loading'
 import SubscriptionPopup from "../../components/Popup/SubscriptionPopup";
 import Popup from 'reactjs-popup';
+import {setDetailParam} from "../../redux/actions/detailParamActions";
+import commaNumber from "../../utils/commaNumber";
 
 
 class Product extends Component {
@@ -25,7 +27,9 @@ class Product extends Component {
     this.state = {
       childProductList : '',
       param: props.location.param,
-      isLoading: true
+      isLoading: true,
+        popupOn: false,
+        popupTarget: ''
     };
   }
 
@@ -35,8 +39,11 @@ class Product extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.checkData()
-    //TODO : 팝업 노출
+    if(prevProps.detailParam != this.props.detailParam){
+        this.setState({popupOn:false})
+        this.getChildProductData();
 
+    }
   }
 
   //await axios.get( process.env.REACT_APP_API_URL + "/product/list", {params: parameter} )
@@ -49,7 +56,7 @@ class Product extends Component {
 
   getChildProductData() {
     axios
-        .get(process.env.REACT_APP_API_URL + "/product/detail", {params: this.state.param})
+        .get(process.env.REACT_APP_API_URL + "/product/detail", {params: this.props.detailParam})
 
         .then(response =>
             this.setState({ data: response.data, isLoading: false })
@@ -59,32 +66,28 @@ class Product extends Component {
         );
   }
 
+  toggleSubscriptionPopup (carrierOmdCode) {
+      this.setState({
+          popupTarget:carrierOmdCode,
+          popupOn:true
+      })
+  }
+
+  checkPopup (single) {
+      if(this.state.popupOn){
+          if(single.CARRIER_OMD_CODE == this.state.popupTarget){
+              return true;
+          }
+      }
+      return false;
+  }
+
   render() {
     const {
-      product,
-      cartItems,
-      wishlistItems,
       filterList,
+      setDetailParam
     } = this.props;
     const { selectedProductColor, data } = this.state;
-    const params = {
-      loop: true,
-      speed: 1000,
-      watchSlidesVisibility: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true
-      }
-    };
-    const wishlistItem = wishlistItems.filter(
-      wishlistItem => wishlistItem.id === product.id
-    )[0];
-
-    const productCartQty = getProductCartQuantity(
-      cartItems,
-      product,
-      selectedProductColor
-    );
 
 
     let colorList = ''
@@ -92,16 +95,16 @@ class Product extends Component {
     // 선택되는 탭에 따라 보여지는 리스트가 달라짐
     let childList = ''
 
-    if(data){
+    if(data||this.state.isLoading!=true){
       colorList = data.product_info[0].COLOR_LIST.split(', ')
 
-      if(this.state.param.plan_type == 'SUPPORT'){
+      if(this.props.detailParam.plan_type == 'SUPPORT'){
         childList = data.child_product_list.filter(e => e.TAB == "SUPPORT_POLICY");
       }else{
         childList = data.child_product_list.filter(e => e.TAB == "CONTRACT");
       }
 
-    childList = childList.filter(e => e.INSTALLMENT_TERM == this.state.param.installment_term);
+    childList = childList.filter(e => e.INSTALLMENT_TERM == this.props.detailParam.installment_term);
 
     }else{
       return (
@@ -111,6 +114,9 @@ class Product extends Component {
           </div>
       )
     }
+
+    //요금제 팝업 위치
+    let target = ''
 
     return (
       <div className="body-wrapper space-pt--70 space-pb--120">
@@ -193,11 +199,9 @@ class Product extends Component {
                         //설정된 필터의 요금제 값을 바꾸는 부분
                         // key : company_code_list or plan_type_list
                         //changeFilter('installment_term_list', single.CODE_VALUE2);
-                        this.setState({
-                          param: {
-                            ...this.state.param,
+                        setDetailParam({
+                            ...this.props.detailParam,
                             installment_term : single.CODE_VALUE2
-                          }
                         })
 
                       }
@@ -215,16 +219,14 @@ class Product extends Component {
         <div className="product-color-picker space-pt--22 space-pb--22">
           <div className="shop-product-button">
             <button
-                className={this.state.param.plan_type === 'SUPPORT' ? 'tab active' : 'tab'}
+                className={this.props.detailParam.plan_type === 'SUPPORT' ? 'tab active' : 'tab'}
                 id="plan-type-tab"
                 onClick={(e) => {
                   planTypeButton(e)
                   e.currentTarget.classList.toggle("active")
-                  this.setState({
-                    param: {
-                      ...this.state.param,
+                  setDetailParam({
+                      ...this.props.detailParam,
                       plan_type : 'SUPPORT'
-                    }
                   })
                 }
                 }
@@ -232,16 +234,14 @@ class Product extends Component {
               공시지원
             </button>
             <button
-                className={this.state.param.plan_type === 'CONTRACT' ? 'tab active' : 'tab'}
+                className={this.props.detailParam.plan_type === 'CONTRACT' ? 'tab active' : 'tab'}
                 id="plan-type-tab"
                 onClick={(e) => {
                   planTypeButton(e)
                   e.currentTarget.classList.toggle("active")
-                  this.setState({
-                    param: {
-                      ...this.state.param,
+                  setDetailParam({
+                      ...this.props.detailParam,
                       plan_type : 'CONTRACT'
-                    }
                   })
                 }
                 }
@@ -252,7 +252,8 @@ class Product extends Component {
         </div>
 
 
-        {/*===공시 요금제 및 금액 노출===*/}
+        {/*===공시 요금제 및 금액 노출===
+        TODO : 자상품 없는 케이스 노출 처리*/}
         {
           childList?(
                   childList.map(single => {
@@ -262,10 +263,10 @@ class Product extends Component {
                       case 'SKT' :
                         icon = 'icon_skt.png';
                         break;
-                      case 'LGU' :
+                      case 'KT' :
                         icon = 'icon_kt.png';
                         break;
-                      case 'KT' :
+                      case 'LGU' :
                         icon = 'icon_lgu.png';
                         break;
                     }
@@ -282,30 +283,37 @@ class Product extends Component {
                           />
                         </div>
                         <div className="button-container">
-                          <Popup trigger={
-                            <button className="subscription-button">
+                            <button className="subscription-button" onClick={(en) =>
+                            {
+                                this.toggleSubscriptionPopup(single.CARRIER_OMD_CODE)
+                            }
+                            }>
                               <div className="d-flex justify-content-around">
                                 <div>
                                   {single.SUBSCRIPTION_NAME}
                                 </div>
                                   <div className="row">
-                                    {single.SUBSCRIPTION_MONTHLY_FEE + "원 "}
+                                    {commaNumber(single.SUBSCRIPTION_MONTHLY_FEE) + "원 "}
                                     <ReactSVG
                                         className="arrow-down"
                                         src={process.env.PUBLIC_URL + "/assets/img/icons/arrow_down.svg"}
                                     />
                                 </div>
                               </div>
-                            </button>}
-                                 modal
-                                   nested>
+                            </button>
+
+                            <Popup open={this.checkPopup(single)}
+                                 closeOnDocumentClick
+                                 modal nested
+                                close={!this.state.popupOn}
+                            >
                             {close => (
                                 <div className="container">
                                   <div className="modal-dialog">
                                     <div className="modal-content">
                                       <div className="modal-header">
                                         <h7 className="modal-title">요금제를 선택하세요</h7>
-                                        <button type="button" className="close" data-dismiss="modal" onClick={close}>×</button>
+                                        <button type="button" className="close" data-dismiss="modal" onClick={() => {this.setState({popupOn:false, popupTarget:''})}}>×</button>
                                       </div>
 
                                       <SubscriptionPopup param={{network_type_code: single.NW_TYPE_CODE, carrier_omd_code: single.CARRIER_OMD_CODE}}>
@@ -316,8 +324,6 @@ class Product extends Component {
                                   </div>
                                 </div>
                           )}
-
-
                           </Popup>
                         </div>
                         <div className="icon-container">
@@ -334,7 +340,7 @@ class Product extends Component {
                                 월 기기 납부금
                               </div>
                               <div className="row">
-                                {single.DEVICE_MONTHLY_FEE + "원 "}
+                                {commaNumber(single.DEVICE_MONTHLY_FEE) + "원 "}
                               </div>
                             </div>
                           </button>
@@ -346,21 +352,25 @@ class Product extends Component {
                           />
                         </div>
                         <div className="button-container">
-                          <button className="subscription-button">
-                            <div className="d-flex justify-content-around">
-                              <div className="row">
-                                {"총 납부액"}
-                                <span style={{paddingLeft:"10px"}}>{single.MONTHLY_FEE + "원 "}</span>
-                              </div>
-                              <div className="row">
-                                <span style={{color:"#0F4C81"}}>{"견적서 보기"}</span>
-                                <ReactSVG
-                                    className="arrow-down"
-                                    src={process.env.PUBLIC_URL + "/assets/img/icons/icon-right-arrow.svg"}
-                                />
-                              </div>
-                            </div>
-                          </button>
+                             <button className="subscription-button">
+                                <div className="d-flex justify-content-around">
+                                  <div className="row">
+                                    {"총 납부액"}
+                                    <span style={{paddingLeft:"10px"}}>{commaNumber(single.MONTHLY_FEE) + "원 "}</span>
+                                  </div>
+                                  <div className="row">
+
+                                        <span style={{color:"#0F4C81"}}>{"견적서 보기"}</span>
+                                      <Link to={{pathname: process.env.PUBLIC_URL + `/estimate/${single.CHILD_PRODUCT_ID}`}}>
+                                        <ReactSVG
+                                            className="arrow-down"
+                                            src={process.env.PUBLIC_URL + "/assets/img/icons/icon-right-arrow.svg"}
+                                        />
+                                      </Link>
+                                  </div>
+                                </div>
+                              </button>
+
                         </div>
                       </div>
 
@@ -407,7 +417,9 @@ const mapStateToProps = (state, ownProps) => {
       state.productData.products,
     wishlistItems: state.wishlistData,
     cartItems: state.cartData,
-    filterList: state.filterList.filter
+    filterList: state.filterList.filter,
+    subscriptionList: state.subscriptionListData,
+    detailParam: state.detailParamData.detailParam
   };
 };
 
@@ -418,8 +430,13 @@ const mapDispatchToProps = dispatch => {
     },
     addToWishlist: item => {
       dispatch(addToWishlistDispatch(item));
+    },
+    setDetailParam: (param) => {
+      dispatch(setDetailParam(param))
     }
+
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
+

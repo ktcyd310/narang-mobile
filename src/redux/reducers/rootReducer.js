@@ -7,6 +7,7 @@ import oemProductListReducer from "./oemProductListReducer";
 import sortingListReducer from "./sortingListReducer";
 import filterReducer from "./filterReducer";
 import filterListReducer from "./filterListReducer";
+import detailParamReducer from "./detailParamReducer";
 
 const rootReducer = combineReducers({
   productData: productReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   oemProductListData: oemProductListReducer,
   sortingListData: sortingListReducer,
   filterData: filterReducer,
-  filterList: filterListReducer
+  filterList: filterListReducer,
+  detailParamData: detailParamReducer
 });
 
 export default rootReducer;
