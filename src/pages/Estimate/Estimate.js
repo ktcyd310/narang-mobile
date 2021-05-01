@@ -29,8 +29,12 @@ class Estimate extends Component {
             param: props.location.param,
             isLoading: true,
             popupOn: false,
-            popupTarget: ''
+            popupTarget: '',
+            addSupportFee: '',
+            shopSupportFee: ''
         };
+
+        this.recalculate = this.recalculate.bind(this);
     }
 
     componentDidMount() {
@@ -59,7 +63,12 @@ class Estimate extends Component {
             .get(process.env.REACT_APP_API_URL + "/customer/estimate", {params : {child_product_id: this.props.match.params.id}})
 
             .then(response =>
-                this.setState({ data: response.data, isLoading: false })
+                this.setState({
+                    data: response.data,
+                    isLoading: false,
+                    deviceMonthlyFee: response.data.estimate_info.DEVICE_MONTHLY_FEE,
+                    monthlyFee: response.data.estimate_info.MONTHLY_FEE
+                })
             )
             .catch(error =>
                 this.setState({ errorMessage: error.message, isLoading: false })
@@ -82,12 +91,38 @@ class Estimate extends Component {
         return false;
     }
 
+    recalculate(event, installmentTerm, place){
+
+        if(place == 'ADD'){
+            this.setState({
+                addSupportFee:event.target.value,
+            })
+        }else{
+            this.setState({
+                shopSupportFee:event.target.value,
+            })
+        }
+
+        this.setState({
+            deviceMonthlyFee: this.state.data.estimate_info.DEVICE_MONTHLY_FEE
+                -Math.round((this.state.addSupportFee/installmentTerm),0)
+                -Math.round((this.state.shopSupportFee/installmentTerm),0),
+            monthlyFee: this.state.data.estimate_info.MONTHLY_FEE
+                -Math.round((this.state.addSupportFee/installmentTerm),0)
+                -Math.round((this.state.shopSupportFee/installmentTerm),0)
+        }
+        )
+
+
+
+    }
+
     render() {
         const {
             filterList,
             setDetailParam
         } = this.props;
-        const { data } = this.state;
+        const { data, deviceMonthlyFee, monthlyFee, addSupportFee, shopSupportFee } = this.state;
 
         if(data||this.state.isLoading!=true){
 
@@ -113,6 +148,14 @@ class Estimate extends Component {
                 break;
         }
 
+        let contractSaleAmount = ''
+
+        if(data.estimate_info.PLAN_TYPE=='CONTRACT'){
+            contractSaleAmount = data.estimate_info.CONTRACT_SALE_AMOUNT
+        }else{
+            contractSaleAmount = 0
+        }
+
         return (
             <div className="body-wrapper space-pt--70 space-pb--120">
                 <div className="estimate-container">
@@ -132,43 +175,53 @@ class Estimate extends Component {
                             </div>
                             <div className="col d-flex justify-content-between">
                                 <h7 className = "estimate-title-text">최종 월 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.MONTHLY_FEE)}원`}</h7>
+                                <h7>{`${commaNumber(monthlyFee)}`}</h7>
                             </div>
                         </div>
                         <div className="estimate-body">
                             <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
                                 <h7 className = "estimate-body-text">월 기기 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.DEVICE_MONTHLY_FEE)}원`}</h7>
+                                <h7>{`${commaNumber(deviceMonthlyFee)}`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">출고가</h7>
-                                <h7>{`${commaNumber(data.estimate_info.FACTORY_PRICE)}원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.FACTORY_PRICE)}`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">공시지원금</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUPPORT_FEE)}원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.SUPPORT_FEE)}`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">추가지원금</h7>
-                                <h7>{`${commaNumber(data.estimate_info.ADD_SUPPORT_FEE)}원`}</h7>
+                                <h7>
+                                    <input className="text-input" style={{width:70, height:25, textAlign:'right'}} type="text"
+                                           value = {addSupportFee}
+                                           onChange={(e) => this.recalculate(e, data.estimate_info.INSTALLMENT_TERM, 'ADD')}>
+                                    </input>
+                                </h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">매장지원금</h7>
-                                <h7>{`${commaNumber(data.estimate_info.DEVICE_MONTHLY_FEE)}원`}</h7>
+                                <h7>
+                                    <input className="text-input" style={{width:70, height:25, textAlign:'right'}} type="text"
+                                           value = {shopSupportFee}
+                                           onChange={(e) => this.recalculate(e, data.estimate_info.INSTALLMENT_TERM, 'SHOP')}>
+                                    </input>
+                                </h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">할부원금</h7>
-                                <h7>{`${commaNumber(data.estimate_info.MODEL_PRICE)}원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.MODEL_PRICE)}`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">할부이자</h7>
-                                <h7>{`${commaNumber(data.estimate_info.INSTALLMENT_FEE)}원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.INSTALLMENT_FEE)}`}</h7>
                             </div>
                         </div>
                         <div className="estimate-body">
                             <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
                                 <h7 className = "e정stimate-body-text">월 납부 요금제액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)}원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)}`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">요금제명</h7>
@@ -176,11 +229,11 @@ class Estimate extends Component {
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">기본료</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)}원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)}`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">선택약정</h7>
-                                <h7>{`${commaNumber(data.estimate_info.CONTRACT_SALE_AMOUNT)}원`}</h7>
+                                <h7>{`${commaNumber(contractSaleAmount)}`}</h7>
                             </div>
 
                         </div>
