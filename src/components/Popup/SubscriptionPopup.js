@@ -1,10 +1,7 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
-import Popup from 'reactjs-popup';
 import PropTypes from "prop-types";
-import {addToCartDispatch} from "../../redux/actions/cartActions";
-import {addToWishlistDispatch} from "../../redux/actions/wishlistActions";
-import {fetchDetailParam, setDetailParam} from "../../redux/actions/detailParamActions";
+import {setDetailParam} from "../../redux/actions/detailParamActions";
 import {connect} from "react-redux";
 import {Preloader} from "../index";
 
@@ -59,8 +56,6 @@ class SubscriptionPopup extends Component {
     }
 
     render() {
-        const { heroSliderData, isLoading, errorMessage } = this.state;
-        const { detailParamChange } = this.props
 
         let subscriptionList =''
         if(this.state.data){
