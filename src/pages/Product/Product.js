@@ -361,7 +361,7 @@ class Product extends Component {
                                   <div className="row">
 
                                         <span style={{color:"#0F4C81"}}>{"견적서 보기"}</span>
-                                      <Link to={{pathname: process.env.PUBLIC_URL + `/estimate/${single.CHILD_PRODUCT_ID}`}}>
+                                      <Link to={{pathname: process.env.PUBLIC_URL + `/estimateForm/${single.CHILD_PRODUCT_ID}`}}>
                                         <ReactSVG
                                             className="arrow-down"
                                             src={process.env.PUBLIC_URL + "/assets/img/icons/icon-right-arrow.svg"}

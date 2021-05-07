@@ -14,6 +14,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Home = lazy(() => import("./pages/Home"));
 const Shop = lazy(() => import("./pages/Shop"));
 const Product = lazy(() => import("./pages/Product"));
+const EstimateForm = lazy(() => import("./pages/EstimateForm"));
 const Estimate = lazy(() => import("./pages/Estimate"));
 const Chat = lazy(() => import("./pages/Chat"));
 const Cart = lazy(() => import("./pages/Cart"));
@@ -64,6 +65,11 @@ function App() {
               path={process.env.PUBLIC_URL + "/product/:id"}
               component={Product}
               layout={DefaultLayout}
+            />
+            <AppRoute
+                path={process.env.PUBLIC_URL + "/estimateForm/:id"}
+                component={EstimateForm}
+                layout={DefaultLayout}
             />
             <AppRoute
                 path={process.env.PUBLIC_URL + "/estimate/:id"}
