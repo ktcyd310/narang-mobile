@@ -35,7 +35,7 @@ class Estimate extends Component {
 
     getEstimateData() {
         axios
-            .get(process.env.REACT_APP_API_DEV_URL + "/customer/estimate/info", {params : {estimate_seq: this.props.match.params.id}})
+            .get(process.env.REACT_APP_API_URL + "/customer/estimate/info", {params : {estimate_seq: this.props.match.params.id}})
 
             .then(response =>
                 this.setState({

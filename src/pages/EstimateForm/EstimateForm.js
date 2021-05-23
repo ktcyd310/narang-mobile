@@ -176,7 +176,7 @@ class EstimateForm extends Component {
             )
             .catch(error =>
                 this.setState({ errorMessage: error.message, isLoading: false })
-            );.
+            );
     }
 
     render() {
