@@ -48,20 +48,20 @@ class Header extends Component {
               </div>
               <div className="col d-flex justify-content-center">
                 {/* header search */}
-                <div className="header-search">
-                  <form>
-                    <input
-                      type="text"
-                      onClick={e => this.handleSearch(e)}
-                      placeholder="Search anything"
-                    />
-                    <ReactSVG
-                      src={
-                        process.env.PUBLIC_URL + "/assets/img/icons/search.svg"
-                      }
-                    />
-                  </form>
-                </div>
+                {/*<div className="header-search">*/}
+                {/*  <form>*/}
+                {/*    <input*/}
+                {/*      type="text"*/}
+                {/*      onClick={e => this.handleSearch(e)}*/}
+                {/*      placeholder="Search anything"*/}
+                {/*    />*/}
+                {/*    <ReactSVG*/}
+                {/*      src={*/}
+                {/*        process.env.PUBLIC_URL + "/assets/img/icons/search.svg"*/}
+                {/*      }*/}
+                {/*    />*/}
+                {/*  </form>*/}
+                {/*</div>*/}
               </div>
               {/*<div className="col-auto">*/}
               {/*  /!* header menu trigger *!/*/}

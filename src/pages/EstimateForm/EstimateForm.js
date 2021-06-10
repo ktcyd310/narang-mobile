@@ -1,8 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
 import { ReactSVG } from "react-svg";
-import { addToCartDispatch } from "../../redux/actions/cartActions";
-import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 import PropTypes from "prop-types";
 import axios from "axios";
 import ReactLoading from 'react-loading'
@@ -151,7 +149,6 @@ class EstimateForm extends Component {
         return postCodeStyle
     }
 
-    //TODO 함수 작성
     createEstimate(param) {
 
         let estimateSeq = ''
@@ -162,7 +159,6 @@ class EstimateForm extends Component {
                 url: process.env.REACT_APP_API_URL+`/customer/estimate/create`,
                 data: qs.stringify(param)
             })
-            // .post("http://localhost:3001/api/v1/customer/estimate/create", {test:'test'})
 
             .then((response) => {
                     estimateSeq = response.data[0].result
@@ -180,10 +176,6 @@ class EstimateForm extends Component {
     }
 
     render() {
-        const {
-            filterList,
-            setDetailParam
-        } = this.props;
         const { data, deviceMonthlyFee, monthlyFee, addSupportFee, shopSupportFee } = this.state;
 
         if(data||this.state.isLoading!=true){
@@ -237,13 +229,13 @@ class EstimateForm extends Component {
                             </div>
                             <div className="col d-flex justify-content-between">
                                 <h7 className = "estimate-title-text">최종 월 납부액</h7>
-                                <h7>{`${commaNumber(monthlyFee)}`}</h7>
+                                <h7>{`${commaNumber(monthlyFee)} 원`}</h7>
                             </div>
                         </div>
                         <div className="estimate-body">
                             <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
                                 <h7 className = "estimate-body-text">월 기기 납부액</h7>
-                                <h7>{`${commaNumber(deviceMonthlyFee)}`}</h7>
+                                <h7>{`${commaNumber(deviceMonthlyFee)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">출고가</h7>
@@ -285,7 +277,7 @@ class EstimateForm extends Component {
                         <div className="subscription-estimate-body">
                             <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
                                 <h7 className = "estimate-body-text">월 요금 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)}`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">요금제명</h7>
@@ -305,7 +297,7 @@ class EstimateForm extends Component {
                     <div className="memo-container border-bottom--thick border-dark">
                         <div className="estimate-body-memo border-0">
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">구매 메모</h7>
+                                <h7 className = "estimate-body-text">추가 메모</h7>
                             </div>
                             <div className="" style={{marginTop:7, textAlign:'center'}}>
                                 <input className="text-input" type="text"
@@ -359,8 +351,6 @@ class EstimateForm extends Component {
                                     }
                                     <button id = "address-search-button" className="address-search" style={{marginLeft:5}} onClick={() => {
 
-
-
                                         this.setState({openPost:'true'})
                                     }
                                     }>주소검색</button>
@@ -406,7 +396,7 @@ class EstimateForm extends Component {
                                     }
                                     this.createEstimate(param)
                                 }}>
-                                    <h7 style={{color:'#0F4C81', fontWeight:'bold'}}>구매 매장과 견적서 공유하기</h7>
+                                    <h7 style={{color:'#0F4C81', fontWeight:'bold'}}>견적서 생성하기</h7>
                                 </button>
                             </div>
                         </div>
@@ -427,9 +417,7 @@ const label = (el) => {
 
 
 EstimateForm.propTypes = {
-    addToWishlist: PropTypes.func,
     products: PropTypes.array,
-    wishlistItems: PropTypes.array,
     oemProductList: PropTypes.array,
     sortingList: PropTypes.array,
     filter: PropTypes.string,
@@ -442,8 +430,6 @@ const mapStateToProps = (state, ownProps) => {
     return {
         product:
         state.productData.products,
-        wishlistItems: state.wishlistData,
-        cartItems: state.cartData,
         filterList: state.filterList.filter,
         subscriptionList: state.subscriptionListData,
         detailParam: state.detailParamData.detailParam
@@ -452,12 +438,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addToCart: (item, quantityCount, selectedProductColor) => {
-            dispatch(addToCartDispatch(item, quantityCount, selectedProductColor));
-        },
-        addToWishlist: item => {
-            dispatch(addToWishlistDispatch(item));
-        },
         setDetailParam: (param) => {
             dispatch(setDetailParam(param))
         }

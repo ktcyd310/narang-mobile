@@ -1,0 +1,5 @@
+{
+  "name": "carrierList",
+  "private": true,
+  "main": "./CarrierList.js"
+}

@@ -1,5 +1,0 @@
-{
-  "name": "rating",
-  "private": true,
-  "main": "./Rating.js"
-}

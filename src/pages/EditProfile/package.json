@@ -1,5 +1,0 @@
-{
-  "name": "edit-profile",
-  "private": true,
-  "main": "./EditProfile.js"
-}

@@ -13,10 +13,3 @@ export const fetchsortingList = sortingList => {
     };
 };
 
-export const setSortingDispatch = (value1, value2) => {
-    return dispatch => {
-        dispatch({ type: SET_SORTING, payload: {
-
-            }  });
-    };
-};

@@ -10,16 +10,6 @@ const productReducer = (state = initState, action) => {
       products: action.payload
     };
   }
-
-  if (action.type === SET_SORTING){
-
-
-
-    return {
-
-    }
-  }
-
   return state;
 };
 

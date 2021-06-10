@@ -1,5 +1,0 @@
-{
-  "name": "order",
-  "private": true,
-  "main": "./Order.js"
-}

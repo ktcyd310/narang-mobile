@@ -4,12 +4,6 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { save, load } from "redux-localstorage-simple";
 import { Provider } from "react-redux";
-import { fetchProducts } from "./redux/actions/productActions";
-import { fetchEventList } from "./redux/actions/eventListActions";
-import { fetchOemProductList, fetchOemSortedProductList } from "./redux/actions/oemProductListActions"
-import { fetchsortingList } from "./redux/actions/sortingListActions"
-import { fetchListFilter } from "./redux/actions/filterListActions";
-
 
 import rootReducer from "./redux/reducers/rootReducer";
 import App from "./App";
@@ -17,8 +11,13 @@ import * as serviceWorker from "./serviceWorker";
 import { composeWithDevTools } from "redux-devtools-extension";
 import axios from "axios";
 import "./env.js"
+
+import { fetchEventList } from "./redux/actions/eventListActions";
+import { fetchOemProductList } from "./redux/actions/oemProductListActions"
+import { fetchsortingList } from "./redux/actions/sortingListActions"
+import { fetchListFilter } from "./redux/actions/filterListActions";
 import {fetchFilter} from "./redux/actions/filterActions";
-import filterReducer from "./redux/reducers/filterReducer";
+
 
 
 const store = createStore(
@@ -26,12 +25,6 @@ const store = createStore(
   load(),
   composeWithDevTools(applyMiddleware(thunk, save()))
 );
-
-// get product data from other source and set it to redux central state
-axios
-  .get(process.env.PUBLIC_URL + "/data/product.json")
-  .then(response => store.dispatch(fetchProducts(response.data)))
-  .catch(error => console.log(error));
 
 axios
     .get(process.env.REACT_APP_API_URL + "/home")
@@ -54,7 +47,6 @@ axios
     .catch(error => console.log(error));
 
 axios
-    //.get(process.env.PUBLIC_URL + "/data/oemProductList.json")
     .get( process.env.REACT_APP_API_URL + "/product/list", {params: ""} )
     .then(response => store.dispatch(fetchOemProductList(response.data)))
     .catch(error => console.log(error));

@@ -1,15 +1,13 @@
 import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
 import { ReactSVG } from "react-svg";
-import { addToCartDispatch } from "../../redux/actions/cartActions";
-import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 import PropTypes from "prop-types";
 import axios from "axios";
 import ReactLoading from 'react-loading'
 import {setDetailParam} from "../../redux/actions/detailParamActions";
 import commaNumber from "../../utils/commaNumber";
 import DaumPostcode from "react-daum-postcode";
-import qs from 'qs';
+import MapContent from "../../components/MapContent/MapContent"
 
 class Estimate extends Component {
     constructor(props) {
@@ -103,7 +101,7 @@ class Estimate extends Component {
                             </div>
                             <div className="col d-flex justify-content-between">
                                 <h7 className = "estimate-title-text">최종 월 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.MONTHLY_FEE)}`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.MONTHLY_FEE)} 원`}</h7>
                             </div>
                         </div>
                         <div className="estimate-body">
@@ -139,7 +137,7 @@ class Estimate extends Component {
                         <div className="subscription-estimate-body">
                             <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
                                 <h7 className = "estimate-body-text">월 요금 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)}`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">요금제명</h7>
@@ -179,6 +177,8 @@ class Estimate extends Component {
                             />
                             <h6 className="h6">구매 매장</h6>
                         </div>
+
+                        {/*TODO : Input Box가 아닌 다른 스타일*/}
                         <div className="shop-body">
                             <div className="d-flex justify-content-between" style={{paddingBottom:7}}>
                                 <h7 className = "p-2 flex-shrink-1 w-25">이름</h7>
@@ -192,31 +192,16 @@ class Estimate extends Component {
                             <div className="d-flex justify-content-between" style={{paddingBottom:7}}>
                                 <h7 className = "p-2 flex-lg-shrink-1 w-25">주소</h7>
                                 <div className= "address-container">
+                                    <button id = "address-search-button" className="address-search-disabled" style={{marginLeft:0, marginRight:5}}>
+                                        우편번호
+                                    </button>
+
                                     <input className="address-postCode" type="text"
                                            value = {data.estimate_info.POST_CODE}
                                     >
                                     </input>
-                                    {
-                                        this.state.openPost ?
-                                            <DaumPostcode
-                                                onComplete={(data) => {
-                                                    this.addrComplete(data)
-                                                    this.setState({openPost:false})
-
-                                                }}
-                                                autoClose
-                                                style={this.postCodeStyle()}
-                                                isDaumPost={this.state.openPost}
-                                            />
-                                            : null
-                                    }
-                                    <button id = "address-search-button" className="address-search" style={{marginLeft:5}} onClick={() => {
 
 
-
-                                        this.setState({openPost:'true'})
-                                    }
-                                    }>주소검색</button>
                                 </div>
                             </div>
 
@@ -241,28 +226,13 @@ class Estimate extends Component {
                         </div>
                     </div>
 
-                    <div className="memo-container border-bottom--thick border-dark">
-                        <div className="estimate-body-memo border-0">
-                            <div className="" style={{marginTop:7, textAlign:'center'}}>
-                                <button className="share-button"
-                                        onClick={() => {
-                                            let param = {
-                                                //TODO : 모든 데이터 파라미터로 전달
-                                                child_product_id: this.props.match.params.id,
-                                                add_support_fee: this.state.addSupportFee,
-                                                shop_support_fee: this.state.shopSupportFee,
-                                                memo: this.state.memo,
-                                                shop_name: this.state.shopName,
-                                                post_code: this.state.postCode,
-                                                detail_addr: this.state.detailAddr,
-                                                detail_addr1: this.state.detailAddr1
-                                            }
-                                            this.createEstimate(param)
-                                        }}>
-                                    <h7 style={{color:'#0F4C81', fontWeight:'bold'}}>구매 매장과 견적서 공유하기</h7>
-                                </button>
-                            </div>
-                        </div>
+
+                    {/*TODO : 가운데 정렬*/}
+                    <div className="map-container border-bottom--thick border-dark">
+                        <MapContent param = {{
+                            address : data.estimate_info.DETAIL_ADDR,
+                            name : data.estimate_info.SHOP_NAME
+                        }}></MapContent>
                     </div>
 
 
@@ -280,9 +250,7 @@ const label = (el) => {
 
 
 Estimate.propTypes = {
-    addToWishlist: PropTypes.func,
     products: PropTypes.array,
-    wishlistItems: PropTypes.array,
     oemProductList: PropTypes.array,
     sortingList: PropTypes.array,
     filter: PropTypes.string,
@@ -295,8 +263,6 @@ const mapStateToProps = (state, ownProps) => {
     return {
         product:
         state.productData.products,
-        wishlistItems: state.wishlistData,
-        cartItems: state.cartData,
         filterList: state.filterList.filter,
         subscriptionList: state.subscriptionListData,
         detailParam: state.detailParamData.detailParam
@@ -305,12 +271,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addToCart: (item, quantityCount, selectedProductColor) => {
-            dispatch(addToCartDispatch(item, quantityCount, selectedProductColor));
-        },
-        addToWishlist: item => {
-            dispatch(addToWishlistDispatch(item));
-        },
         setDetailParam: (param) => {
             dispatch(setDetailParam(param))
         }

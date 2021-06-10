@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
 import { getProducts, getDiscountPrice } from "../../helpers/product";
-import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 
 const SearchProducts = ({ products, wishlistItems, addToWishlist }) => {
   return (
@@ -105,9 +104,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addToWishlist: item => {
-      dispatch(addToWishlistDispatch(item));
-    }
+    // addToWishlist: item => {
+    //   dispatch(addToWishlistDispatch(item));
+    // }
   };
 };
 

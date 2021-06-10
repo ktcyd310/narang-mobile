@@ -1,25 +1,20 @@
 import PropTypes from "prop-types";
 import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
-import { Link, useHistory, withRouter } from "react-router-dom";
-import { ReactSVG } from "react-svg";
+import { withRouter } from "react-router-dom";
 
-import { getDiscountPrice } from "../../helpers/product";
 import {getOemProductLists } from "../../helpers/oemProductList"
 import { getsortingLists } from "../../helpers/sortingList"
 import { getFilteredProductListDispatch } from "../../redux/actions/oemProductListActions"
 
-import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 import commaNumber from "../../utils/commaNumber"
-import {Dropdown, DropdownButton, ButtonGroup} from "react-bootstrap";
+import {Dropdown, DropdownButton} from "react-bootstrap";
 import {getFilter} from "../../helpers/filter";
 import {changeFilterDataDispatch} from "../../redux/actions/filterActions";
 import {setDetailParam} from "../../redux/actions/detailParamActions";
 
-//import Dropdown from 'react-overlays/Dropdown';
 
-
-class ShopProducts extends Component {
+class CarrierProductList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,8 +37,11 @@ class ShopProducts extends Component {
   }
 
   render() {
-    const { oemProductList, sortingList, getFilteredProductList, filter , setSortingFilter} = this.props;
+    const { oemProductList, sortingList, filter , setSortingFilter} = this.props;
     const { listActivate } = this.state;
+
+    const totalCount = oemProductList.length
+
 
     return (
       <div className="shop-products-area">
@@ -54,7 +52,6 @@ class ShopProducts extends Component {
               <DropdownButton
                       className="btn-primary"
                       size="sm"
-//                      variant="secondary"
                       title="정렬"
                   >
                     {
@@ -71,7 +68,7 @@ class ShopProducts extends Component {
                     }
               </DropdownButton>
               <div className="list-count">
-                총 4개
+                총 {totalCount}개
               </div>
             </div>
           </div>
@@ -99,16 +96,6 @@ class ShopProducts extends Component {
 
             return (
 
-                // <Link
-                //     to={{pathname: process.env.PUBLIC_URL + `/product/${single.PRODUCT_GROUP_ID}`,
-                //       param:{
-                //         product_group_id:single.PRODUCT_GROUP_ID,
-                //         subscription_ids:single.SUBSCRIPTION_IDS,
-                //         installment_term:single.INSTALLMENT_TERM,
-                //         plan_type:this.props.filter.plan_type_list
-                //       }}}
-                //     onclick={this.props.setDetailParam}
-                // >
                   <a onClick={() => {
                     this.props.setDetailParam(param)
                     this.routeChange(single)
@@ -121,13 +108,13 @@ class ShopProducts extends Component {
                     >
 
                       {/*<Link to={process.env.PUBLIC_URL + `/product/${single.id}`}>*/}
-                        <div className="list-product__image">
+                      <span className="thumb">
                           <img
                               src={process.env.REACT_APP_S3_URL + `${single.IMAGE_URL}`}
-                              className="img-fluid"
+                              className="thumb__image"
                               alt=""
                           />
-                        </div>
+                      </span>
                       {/*</Link>*/}
 
                       <div className="list-product__content">
@@ -181,7 +168,7 @@ class ShopProducts extends Component {
   }
 }
 
-ShopProducts.propTypes = {
+CarrierProductList.propTypes = {
   addToWishlist: PropTypes.func,
   products: PropTypes.array,
   wishlistItems: PropTypes.array,
@@ -228,4 +215,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShopProducts));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CarrierProductList));

@@ -1,15 +1,11 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import Swiper from "react-id-swiper";
 import { ReactSVG } from "react-svg";
-import { Rating } from "../../components";
-import { Link, useHistory, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  getDiscountPrice,
-  getProductCartQuantity, productFilterButton, planTypeButton
+    productFilterButton,
+    planTypeButton
 } from "../../helpers/product";
-import { addToCartDispatch } from "../../redux/actions/cartActions";
-import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 import {Chip} from "@material-ui/core";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import PropTypes from "prop-types";
@@ -45,8 +41,6 @@ class Product extends Component {
 
     }
   }
-
-  //await axios.get( process.env.REACT_APP_API_URL + "/product/list", {params: parameter} )
 
   checkData() {
     if(!this.state.data){
@@ -87,7 +81,7 @@ class Product extends Component {
       filterList,
       setDetailParam
     } = this.props;
-    const { selectedProductColor, data } = this.state;
+    const { data } = this.state;
 
 
     let colorList = ''
@@ -115,9 +109,6 @@ class Product extends Component {
       )
     }
 
-    //요금제 팝업 위치
-    let target = ''
-
     return (
       <div className="body-wrapper space-pt--70 space-pb--120">
         <div className="detail-img-container">
@@ -137,15 +128,6 @@ class Product extends Component {
                   <div className="product-content-header__main-info">
                     <h3 className="title">{data.product_info[0].PRODUCT_GROUP_NAME}</h3>
                   </div>
-                  {/*<div className="product-content-header__wishlist-info text-center">*/}
-                  {/*  <ReactSVG*/}
-                  {/*    src={*/}
-                  {/*      process.env.PUBLIC_URL +*/}
-                  {/*      "/assets/img/icons/heart-dark.svg"*/}
-                  {/*    }*/}
-                  {/*  />*/}
-                  {/*  <span className="count">{product.wishlistCount}</span>*/}
-                  {/*</div>*/}
                 </div>
               </div>
             </div>
@@ -392,17 +374,9 @@ class Product extends Component {
   }
 }
 
-const label = (el) => {
-  return (
-      <label className={el} htmlFor={el} />
-  )
-}
-
 
 Product.propTypes = {
-  addToWishlist: PropTypes.func,
   products: PropTypes.array,
-  wishlistItems: PropTypes.array,
   oemProductList: PropTypes.array,
   sortingList: PropTypes.array,
   filter: PropTypes.string,
@@ -411,12 +385,9 @@ Product.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const itemId = ownProps.match.params.id;
   return {
     product:
       state.productData.products,
-    wishlistItems: state.wishlistData,
-    cartItems: state.cartData,
     filterList: state.filterList.filter,
     subscriptionList: state.subscriptionListData,
     detailParam: state.detailParamData.detailParam
@@ -425,12 +396,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addToCart: (item, quantityCount, selectedProductColor) => {
-      dispatch(addToCartDispatch(item, quantityCount, selectedProductColor));
-    },
-    addToWishlist: item => {
-      dispatch(addToWishlistDispatch(item));
-    },
     setDetailParam: (param) => {
       dispatch(setDetailParam(param))
     }

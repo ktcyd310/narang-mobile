@@ -1,4 +1,3 @@
-import {ADD_TO_WISHLIST} from "./wishlistActions";
 
 export const FETCH_FILTER_SUCCESS = "FETCH_FILTER_SUCCESS";
 export const FETCH_FILTER_CHANGE = "FETCH_FILTER_CHANGE";

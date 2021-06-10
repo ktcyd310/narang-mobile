@@ -7,7 +7,6 @@ import { ReactSVG } from "react-svg";
 import { getProducts, getDiscountPrice } from "../../helpers/product";
 import { getEventLists } from "../../helpers/eventList";
 
-import { addToWishlistDispatch } from "../../redux/actions/wishlistActions";
 import commaNumber from "../../utils/commaNumber"
 
 const EventList = ({ eventList, wishlistItems, addToWishlist }) => {
@@ -119,9 +118,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToWishlist: (item) => {
-      dispatch(addToWishlistDispatch(item));
-    }
+
   };
 };
 
