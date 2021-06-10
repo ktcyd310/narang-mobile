@@ -31,33 +31,54 @@ axios
     .then(response => store.dispatch(fetchEventList(response.data)))
     .catch(error => console.log(error));
 
-axios
-    .get(process.env.PUBLIC_URL + "/data/sortingList.json")
-    .then(response => store.dispatch(fetchsortingList(response.data)))
-    .catch(error => console.log(error));
+function fetchDatas(){
 
-axios
-    .get(process.env.PUBLIC_URL + "/data/filter.json")
-    .then(response => store.dispatch(fetchFilter(response.data)))
-    .catch(error => console.log(error));
+    console.log('this called')
 
-axios
-    .get(process.env.PUBLIC_URL + "/data/filterList.json")
-    .then(response => store.dispatch(fetchListFilter(response.data)))
-    .catch(error => console.log(error));
+    axios
+        .get(process.env.PUBLIC_URL + "/data/filter.json")
+        .then(response => {
+            console.log(response)
+            store.dispatch(fetchFilter(response.data))
+            axios.get(process.env.PUBLIC_URL + "/data/sortingList.json")
+                .then(response => {store.dispatch(fetchsortingList(response.data))
+                    console.log(response)
+                    axios.get(process.env.PUBLIC_URL + "/data/filterList.json")
+                        .then(response => {store.dispatch(fetchListFilter(response.data))
+                            console.log(response)
+                            axios.get( process.env.REACT_APP_API_URL + "/product/list", {params:
+                                        {
+                                            "company_code": "ALL",
+                                            "factory_price_min": 100000,
+                                            "factory_price_max": 2500000,
+                                            "subscription_group_id": 1,
+                                            "plan_type_list": "SUPPORT"
+                                        }
+                                } )
+                                .then(response => {store.dispatch(fetchOemProductList(response.data))
+                                    return new Promise(function(resolve, reject){
+                                        resolve(
+                                            ReactDOM.render(
+                                                <Provider store={store}>
+                                                    <App />
+                                                </Provider>,
+                                                document.getElementById("root")
+                                            )
+                                        )
+                                    });
+                                })
+                                .catch(error => console.log(error));
 
-axios
-    .get( process.env.REACT_APP_API_URL + "/product/list", {params: ""} )
-    .then(response => store.dispatch(fetchOemProductList(response.data)))
-    .catch(error => console.log(error));
+                        })
+                        .catch(error => console.log(error));
+                })
+                .catch(error => console.log(error));
 
+        })
+        .catch(error => console.log(error));
+}
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById("root")
-);
+fetchDatas()
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

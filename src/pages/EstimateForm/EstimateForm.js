@@ -128,7 +128,7 @@ class EstimateForm extends Component {
 
     postCodeStyle() {
         let pose = document.getElementById('address-search-button').getBoundingClientRect()
-        let y = pose.y + 200
+        let y = pose.y-200
         let x = (document.body.offsetWidth / 2) - (document.body.offsetWidth*0.9 / 2)
         let width = document.body.offsetWidth*0.9
 

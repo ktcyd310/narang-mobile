@@ -161,7 +161,8 @@ class CarrierProductList extends Component {
 
                 //</Link>
               );
-            })}
+            }
+            )}
         </div>
       </div>
     );
