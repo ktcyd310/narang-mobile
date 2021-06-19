@@ -1,6 +1,4 @@
 import axios from "axios";
-import {fetchFilter} from "./filterActions";
-import {fetchProducts} from "./productActions";
 
 export const FETCH_OEM_PRODUCT_LIST_SUCCESS = "FETCH_OEM_PRODUCT_LIST_SUCCESS";
 export const FETCH_OEM_SORTED_PRODUCT_LIST_SUCCESS = "FETCH_OEM_SORTED_PRODUCT_LIST_SUCCESS"

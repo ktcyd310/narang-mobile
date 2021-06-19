@@ -28,12 +28,12 @@ function App() {
               component={CarrierList}
               layout={DefaultLayout}
             />
-            <AppRoute
-              path={process.env.PUBLIC_URL + "/home"}
-              //TODO : 추후 Home 화면으로 활용
-              component={CarrierList}
-              layout={DefaultLayout}
-            />
+            {/*<AppRoute*/}
+            {/*  path={process.env.PUBLIC_URL + "/home"}*/}
+            {/*  //TODO : 추후 Home 화면으로 활용*/}
+            {/*  component={CarrierList}*/}
+            {/*  layout={DefaultLayout}*/}
+            {/*/>*/}
             <AppRoute
               path={process.env.PUBLIC_URL + "/product/:id"}
               component={Product}

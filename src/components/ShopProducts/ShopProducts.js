@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -26,7 +26,7 @@ class CarrierProductList extends Component {
 
   // Filter 로딩 후 데이터 재로딩을 위함
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.filter != this.props.filter){
+    if (prevProps.filter !== this.props.filter){
       this.props.getFilteredProductList(this.props.filter)
     }
   }

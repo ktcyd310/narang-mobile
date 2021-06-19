@@ -122,10 +122,6 @@ export const subscriptionFilterButton = (en, value) => {
 // product 필터
 export const productFilterButton = (en, value) => {
 
-  let buttons = document.querySelectorAll("#product-filter-button")
-
-  //en.currentTarget.parentNode.previousElementSibling.classList[0].toggle("active");
-
   //dropdown menu 삭제
   en.currentTarget.parentNode.classList.remove("show")
   en.currentTarget.parentNode.classList.toggle("hide")

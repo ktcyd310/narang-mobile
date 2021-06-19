@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import {setDetailParam} from "../../redux/actions/detailParamActions";
@@ -42,6 +42,8 @@ class SubscriptionPopup extends Component {
                 break;
             case 'LGU':
                 subscriptionList[2] = subscriptionId
+                break;
+            default :
                 break;
         }
 

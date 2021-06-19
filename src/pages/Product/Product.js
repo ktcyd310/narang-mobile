@@ -6,7 +6,6 @@ import {
     productFilterButton,
     planTypeButton
 } from "../../helpers/product";
-import {Chip} from "@material-ui/core";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -35,7 +34,7 @@ class Product extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.checkData()
-    if(prevProps.detailParam != this.props.detailParam){
+    if(prevProps.detailParam !== this.props.detailParam){
         this.setState({popupOn:false})
         this.getChildProductData();
 
@@ -69,7 +68,7 @@ class Product extends Component {
 
   checkPopup (single) {
       if(this.state.popupOn){
-          if(single.CARRIER_OMD_CODE == this.state.popupTarget){
+          if(single.CARRIER_OMD_CODE === this.state.popupTarget){
               return true;
           }
       }
@@ -83,22 +82,19 @@ class Product extends Component {
     } = this.props;
     const { data } = this.state;
 
-
-    let colorList = ''
-
     // 선택되는 탭에 따라 보여지는 리스트가 달라짐
     let childList = ''
 
-    if(data||this.state.isLoading!=true){
-      colorList = data.product_info[0].COLOR_LIST.split(', ')
+    if(data||this.state.isLoading!==true){
+      // colorList = data.product_info[0].COLOR_LIST.split(', ')
 
-      if(this.props.detailParam.plan_type == 'SUPPORT'){
-        childList = data.child_product_list.filter(e => e.TAB == "SUPPORT_POLICY");
+      if(this.props.detailParam.plan_type === 'SUPPORT'){
+        childList = data.child_product_list.filter(e => e.TAB === "SUPPORT_POLICY");
       }else{
-        childList = data.child_product_list.filter(e => e.TAB == "CONTRACT");
+        childList = data.child_product_list.filter(e => e.TAB === "CONTRACT");
       }
 
-    childList = childList.filter(e => e.INSTALLMENT_TERM == this.props.detailParam.installment_term);
+    childList = childList.filter(e => e.INSTALLMENT_TERM === this.props.detailParam.installment_term);
 
     }else{
       return (
@@ -133,25 +129,25 @@ class Product extends Component {
             </div>
           </div>
         </div>
-        <div className="product-color-picker border-bottom--thick space-pt--25 space-pb--22">
-          <div className="container">
-            <div className="temp">
-              색상
-            </div>
-              <ul className="color-picker" >
-                {colorList.map((el, key) => {
+        {/*<div className="product-color-picker border-bottom--thick space-pt--25 space-pb--22">*/}
+        {/*  <div className="container">*/}
+        {/*    <div className="temp">*/}
+        {/*      색상*/}
+        {/*    </div>*/}
+        {/*      <ul className="color-picker" >*/}
+        {/*        {colorList.map((el, key) => {*/}
 
-                  el = "#"+el
+        {/*          el = "#"+el*/}
 
-                  return (
-                      <li key={key}>
-                        <Chip className={el} htmlFor={el} style={{backgroundColor: el}} />
-                      </li>
-                  );
-                })}
-              </ul>
-          </div>
-        </div>
+        {/*          return (*/}
+        {/*              <li key={key}>*/}
+        {/*                <Chip className={el} htmlFor={el} style={{backgroundColor: el}} />*/}
+        {/*              </li>*/}
+        {/*          );*/}
+        {/*        })}*/}
+        {/*      </ul>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
 
         {/*====할부 방법====*/}
         <div className="product-color-picker border-bottom--thick space-pt--25 space-pb--22">
@@ -242,15 +238,23 @@ class Product extends Component {
 
                     let icon = ''
                     switch(single.CARRIER_OMD_CODE){
-                      case 'SKT' :
-                        icon = 'icon_skt.png';
-                        break;
-                      case 'KT' :
-                        icon = 'icon_kt.png';
-                        break;
-                      case 'LGU' :
-                        icon = 'icon_lgu.png';
-                        break;
+
+                        case 'SKT' :
+                            icon = 'icon_skt.png';
+                            break;
+
+                        case 'KT' :
+                            icon = 'icon_kt.png';
+                            break;
+
+                        case 'LGU' :
+                            icon = 'icon_lgu.png';
+                            break;
+
+                        default :
+                            break;
+
+
                     }
 
               return (

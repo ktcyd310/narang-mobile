@@ -7,6 +7,9 @@ html, body {
     overflow-x: hidden;
 }
 
+/* Input 태그 하이라이트 제거 */
+input:focus { outline: none; }
+
 
 .popup-overlay {
     background: rgba(0, 0, 0, 0.5);

@@ -7,6 +7,4 @@ export const getsortingLists = (sortingList, type) => {
     }else{
         return sortingList.contract_sorting_dropdown_list
     }
-
-    return sortingList;
 };

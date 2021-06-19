@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
-import { getProducts, getDiscountPrice } from "../../helpers/product";
+import { getProducts } from "../../helpers/product";
 import { getEventLists } from "../../helpers/eventList";
 
 import commaNumber from "../../utils/commaNumber"

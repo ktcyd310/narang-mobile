@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { ReactSVG } from "react-svg";
 import Offcanvas from "./Offcanvas";
 import SearchKeywords from "./SearchKeywords";
 
@@ -38,7 +37,7 @@ class Header extends Component {
             <div className="row align-items-center">
                 {/* header logo */}
                 <div className="header-logo">
-                  <Link to={process.env.PUBLIC_URL + "/home"}>
+                  <Link to={process.env.PUBLIC_URL + "/"}>
                     <img
                       src={process.env.PUBLIC_URL + "/assets/img/logo.png"}
                       className="img-fluid"

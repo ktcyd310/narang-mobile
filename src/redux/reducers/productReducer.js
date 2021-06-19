@@ -1,5 +1,4 @@
 import { FETCH_PRODUCTS_SUCCESS } from "../actions/productActions";
-import { SET_SORTING } from "../actions/sortingListActions";
 
 const initState = {};
 

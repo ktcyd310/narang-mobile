@@ -7,12 +7,6 @@ const fetchFilterSuccess = filter => ({
     payload: filter
 });
 
-const fetchFilterChange = param => ({
-    type: FETCH_FILTER_CHANGE,
-    payload: param
-});
-
-
 // fetch products
 export const fetchFilter = filter => {
     return dispatch => {

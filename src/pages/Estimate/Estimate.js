@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ReactSVG } from "react-svg";
 import PropTypes from "prop-types";
@@ -6,7 +6,6 @@ import axios from "axios";
 import ReactLoading from 'react-loading'
 import {setDetailParam} from "../../redux/actions/detailParamActions";
 import commaNumber from "../../utils/commaNumber";
-import DaumPostcode from "react-daum-postcode";
 import MapContent from "../../components/MapContent/MapContent"
 
 class Estimate extends Component {
@@ -50,7 +49,7 @@ class Estimate extends Component {
         const { data } = this.state;
 
 
-        if(data||this.state.isLoading!=true){
+        if(data||this.state.isLoading!==true){
 
         }else{
             return (
@@ -72,14 +71,8 @@ class Estimate extends Component {
             case 'LGU' :
                 icon = 'icon_lgu.png';
                 break;
-        }
-
-        let contractSaleAmount = ''
-
-        if(data.estimate_info.PLAN_TYPE=='CONTRACT'){
-            contractSaleAmount = data.estimate_info.CONTRACT_SALE_AMOUNT
-        }else{
-            contractSaleAmount = 0
+            default :
+                break;
         }
 
         return (
@@ -259,7 +252,6 @@ Estimate.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-    const itemId = ownProps.match.params.id;
     return {
         product:
         state.productData.products,

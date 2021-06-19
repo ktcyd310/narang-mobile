@@ -25,7 +25,7 @@ class CarrierList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.filter != this.props.filter){
+    if (prevProps.filter !== this.props.filter){
       this.props.getFilteredProductList(this.props.filter)
     }
   }
@@ -63,8 +63,8 @@ class CarrierList extends Component {
                     onClick={e => toggleSubscriptionFilter(e)}
                 >
                   <ReactSVG src="assets/img/icons/list.svg"/>
-                  <text className="filter-text">요금제: </text>
-                  <text className="filter-text" id = "filter-text">요금제 선택</text>
+                  <div className="filter-text">요금제: </div>
+                  <div className="filter-text" id = "filter-text">요금제 선택</div>
                 </button>
               </div>
               <div className="col">
@@ -74,7 +74,7 @@ class CarrierList extends Component {
                   onClick={e => toggleShopTopFilter(e)}
                 >
                   <ReactSVG src="assets/img/icons/filter.svg"/>
-                  <text className="filter-text">필터</text>
+                  <div className="filter-text">필터</div>
                 </button>
               </div>
             </div>
@@ -167,13 +167,14 @@ class CarrierList extends Component {
                                     size="sm"
                                     //                      variant="secondary"
                                     title={value}
+                                    key={key}
                                 >
 
                                   {
-                                    filterList[key] && filterList[key].map(single => {
+                                    filterList[key] && filterList[key].map((single) => {
 
                                       return(
-                                          <Dropdown.Item id = "dropdown-item" className="dropdown-item" onClick={(en) => {
+                                          <Dropdown.Item id = "dropdown-item" className="dropdown-item" key = {single.CODE_VALUE1} onClick={(en) => {
                                             // 드롭다운 타이틀 바꾸는 부분
                                             productFilterButton(en, single.CODE_VALUE1);
 

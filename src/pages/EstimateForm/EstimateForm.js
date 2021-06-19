@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ReactSVG } from "react-svg";
 import PropTypes from "prop-types";
@@ -39,7 +39,7 @@ class EstimateForm extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.checkData()
-        if(prevProps.detailParam != this.props.detailParam){
+        if(prevProps.detailParam !== this.props.detailParam){
             this.setState({popupOn:false})
             this.getChildProductData();
 
@@ -76,7 +76,7 @@ class EstimateForm extends Component {
         let addSupportFee = this.state.addSupportFee
         let shopSupportFee = this.state.shopSupportFee
 
-        if(place == 'ADD'){
+        if(place === 'ADD'){
             this.setState({
                 addSupportFee:event.target.value,
             })
@@ -178,7 +178,7 @@ class EstimateForm extends Component {
     render() {
         const { data, deviceMonthlyFee, monthlyFee, addSupportFee, shopSupportFee } = this.state;
 
-        if(data||this.state.isLoading!=true){
+        if(data||this.state.isLoading!==true){
 
         }else{
             return (
@@ -200,11 +200,13 @@ class EstimateForm extends Component {
             case 'LGU' :
                 icon = 'icon_lgu.png';
                 break;
+            default :
+                break;
         }
 
         let contractSaleAmount = ''
 
-        if(data.estimate_info.PLAN_TYPE=='CONTRACT'){
+        if(data.estimate_info.PLAN_TYPE==='CONTRACT'){
             contractSaleAmount = data.estimate_info.CONTRACT_SALE_AMOUNT
         }else{
             contractSaleAmount = 0
@@ -426,7 +428,6 @@ EstimateForm.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-    const itemId = ownProps.match.params.id;
     return {
         product:
         state.productData.products,
