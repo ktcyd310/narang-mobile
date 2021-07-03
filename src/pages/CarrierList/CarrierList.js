@@ -51,6 +51,12 @@ class CarrierList extends Component {
       //installment_term_list: '24개월 할부'
     }
 
+
+    const defaultSubscription = filterList.subscription_group_list.filter(
+        defaultSubscription => defaultSubscription.SUBSCRIPTION_GROUP_ID === this.props.filter.subscription_group_id
+    )
+
+
     return (
       <div className="body-wrapper space-pt--70 space-pb--120">
         <div className="shop-header bg-color--white">
@@ -64,7 +70,7 @@ class CarrierList extends Component {
                 >
                   <ReactSVG src="assets/img/icons/list.svg"/>
                   <div className="filter-text">요금제: </div>
-                  <div className="filter-text" id = "filter-text">요금제 선택</div>
+                  <div className="filter-text" id = "filter-text">{defaultSubscription[0].SUBSCRIPTION_GROUP_NAME}</div>
                 </button>
               </div>
               <div className="col">
@@ -95,18 +101,35 @@ class CarrierList extends Component {
                             {subscriptionGroup.map((e) => {
                               return (
                                   <li key={e.SUBSCRIPTION_GROUP_ID}>
-                                    <button
-                                        id = "subscription-filter-button"
-                                        onClick={en => {
-                                          //필터 상단 문구 바꾸는 부분
-                                          subscriptionFilterButton(en, e.SUBSCRIPTION_GROUP_NAME);
 
-                                          //설정된 필터의 요금제 값을 바꾸는 부분
-                                          changeFilter('subscription_group_id', e.SUBSCRIPTION_GROUP_ID);
-                                        }}
-                                    >
-                                      {e.SUBSCRIPTION_GROUP_NAME}
-                                    </button>
+                                    {e.SUBSCRIPTION_GROUP_ID===this.props.filter.subscription_group_id?
+                                        (<button
+                                            id = "subscription-filter-button"
+                                            class = "active"
+                                            onClick={en => {
+                                              //필터 상단 문구 바꾸는 부분
+                                              subscriptionFilterButton(en, e.SUBSCRIPTION_GROUP_NAME);
+
+                                              //설정된 필터의 요금제 값을 바꾸는 부분
+                                              changeFilter('subscription_group_id', e.SUBSCRIPTION_GROUP_ID);
+                                            }}
+                                        >
+                                          {e.SUBSCRIPTION_GROUP_NAME}
+                                        </button>)
+                                        :
+                                        (<button
+                                            id = "subscription-filter-button"
+                                            onClick={en => {
+                                              //필터 상단 문구 바꾸는 부분
+                                              subscriptionFilterButton(en, e.SUBSCRIPTION_GROUP_NAME);
+
+                                              //설정된 필터의 요금제 값을 바꾸는 부분
+                                              changeFilter('subscription_group_id', e.SUBSCRIPTION_GROUP_ID);
+                                            }}
+                                        >
+                                          {e.SUBSCRIPTION_GROUP_NAME}
+                                        </button>)
+                                    }
                                   </li>
                               );
                             })}
@@ -149,7 +172,7 @@ class CarrierList extends Component {
               </div>
             </div>
           </div>
-          <div className="shop-filter" id="shop-filter-menu">
+          <div className="shop-filter" id="shop-filter-menu" style={{overflow: 'visible', height: 56}}>
             <div className="container space-mt--15 space-mb--10">
               <div className="row">
                 <div className="col-12">

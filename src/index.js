@@ -51,7 +51,7 @@ function fetchDatas(){
                                             "company_code": "ALL",
                                             "factory_price_min": 100000,
                                             "factory_price_max": 2500000,
-                                            "subscription_group_id": 1,
+                                            "subscription_group_id": 9,
                                             "plan_type_list": "SUPPORT"
                                         }
                                 } )

@@ -83,9 +83,9 @@ class CarrierProductList extends Component {
           {oemProductList &&
           oemProductList.map(single => {
 
-              const sktMonthlyFee = single.SKT_MONTHLY_FEE? `${commaNumber(single.SKT_MONTHLY_FEE)}원`: `결과없음`;
-              const ktMonthlyFee = single.KT_MONTHLY_FEE? `${commaNumber(single.KT_MONTHLY_FEE)}원` : `결과없음`;
-              const lguMonthlyFee = single.LGU_MONTHLY_FEE? `${commaNumber(single.LGU_MONTHLY_FEE)}원` : `결과없음`;
+              const sktMonthlyFee = single.SKT_MONTHLY_FEE? `${commaNumber(single.SKT_MONTHLY_FEE)}원`: `미판매 단말`;
+              const ktMonthlyFee = single.KT_MONTHLY_FEE? `${commaNumber(single.KT_MONTHLY_FEE)}원` : `미판매 단말`;
+              const lguMonthlyFee = single.LGU_MONTHLY_FEE? `${commaNumber(single.LGU_MONTHLY_FEE)}원` : `미판매 단말`;
 
               let param={
                     product_group_id:single.PRODUCT_GROUP_ID,
