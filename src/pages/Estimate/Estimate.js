@@ -45,6 +45,15 @@ class Estimate extends Component {
             );
     }
 
+    getDate(single) {
+        let date = new Date(single);
+        let year = date.getFullYear()
+        let month = ("0" + (1 + date.getMonth())).slice(-2);
+        let day = ("0" + date.getDate()).slice(-2);
+
+        return year+'.'+month+'.'+day
+    }
+
     render() {
         const { data } = this.state;
 
@@ -76,65 +85,92 @@ class Estimate extends Component {
         }
 
         return (
-            <div className="body-wrapper space-pt--70 space-pb--120">
+            <div className="body-wrapper space-pt--70 space-pb--15">
                 <div className="estimate-container">
-                    <div className="estimate-content-header border-bottom--thick border-dark">
+                    <div className="estimate-content-header">
                         <img
                             src={process.env.PUBLIC_URL + `/assets/img/icons/${icon}`}
                             className="img-fluid"
                             alt=""
                         />
-                        <h4 style={{alignSelf:"center"}}>{data.estimate_info.CARRIER_OMD_CODE} 견적서</h4>
+                        <h4 style={{alignSelf:"center", marginLeft:8}}> {data.estimate_info.CARRIER_OMD_CODE} 견적서
+                        </h4>
                     </div>
 
                     <div className="container-lg">
+                        <div className="border-bottom--thick border-dark" style={{marginBottom:15, textAlign:"end"}}>
+                            <span>기준일 : {this.getDate(data.estimate_info.CREATE_DATE)}</span>
+                        </div>
                         <div className="estimate-title">
                             <div className="col d-flex justify-content-between">
-                                <h7 className = "estimate-title-text">{data.estimate_info.PRODUCT_GROUP_NAME}</h7>
+                                <span className = "estimate-title-text" style={{fontWeight:"bold"}}>{data.estimate_info.PRODUCT_GROUP_NAME}</span>
                             </div>
                             <div className="col d-flex justify-content-between">
-                                <h7 className = "estimate-title-text">최종 월 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.MONTHLY_FEE)} 원`}</h7>
+                                <span className = "estimate-title-text" style={{fontWeight:"bold"}}>최종 월 납부액</span>
+                                <span style={{fontWeight:"bold"}}>{`${commaNumber(data.estimate_info.MONTHLY_FEE)} 원`}</span>
                             </div>
                         </div>
                         <div className="estimate-body">
-                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
-                                <h7 className = "estimate-body-text">월 기기 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.DEVICE_MONTHLY_FEE)}`}</h7>
-                            </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">출고가</h7>
                                 <h7>{`${commaNumber(data.estimate_info.FACTORY_PRICE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">공시지원금</h7>
+                                <div className = "estimate-body-text">
+                                    공시지원금
+                                    <span> (-) </span>
+                                </div>
                                 <h7>{`${commaNumber(data.estimate_info.SUPPORT_FEE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">추가지원금</h7>
+                                <div className = "estimate-body-text">
+                                    추가지원금
+                                    <span> (-) </span>
+                                </div>
                                 <h7>{`${commaNumber(data.estimate_info.ADD_SUPPORT_FEE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">매장지원금</h7>
+                                <div className = "estimate-body-text">
+                                    매장지원금
+                                    <span> (-) </span>
+                                </div>
                                 <h7>{`${commaNumber(data.estimate_info.SHOP_SUPPORT_FEE)} 원`}</h7>
                             </div>
+                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
+
+                            </div>
+
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">할부원금</h7>
                                 <h7>{`${commaNumber(data.estimate_info.MODEL_PRICE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">할부이자</h7>
+                                <div className = "estimate-body-text">
+                                    할부이자
+                                    <span> (+) </span>
+                                </div>
                                 <h7>{`${commaNumber(data.estimate_info.INSTALLMENT_FEE)} 원`}</h7>
                             </div>
+
+                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
+
+                            </div>
+
+                            <div className="col d-flex justify-content-between" style={{paddingBottom:7}}>
+                                <span className = "estimate-body-text" style={{fontWeight:"bold"}}>월 기기 납부액</span>
+                                <span style={{fontWeight:"bold"}}>{`${commaNumber(data.estimate_info.DEVICE_MONTHLY_FEE)} 원`}</span>
+                            </div>
+
+
                         </div>
                         <div className="subscription-estimate-body">
-                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
-                                <h7 className = "estimate-body-text">월 요금 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</h7>
-                            </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">요금제명</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_NAME)}`}</h7>
+                                <span style={{textAlign:"end"}}>
+                                    <span>{`${commaNumber(data.estimate_info.SUBSCRIPTION_NAME)}`}</span>
+                                    <br></br>
+                                    <span style={{fontSize:11}}>(월 데이터 {data.estimate_info.DATA_AMOUNT})</span>
+                                </span>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">기본료</h7>
@@ -143,6 +179,34 @@ class Estimate extends Component {
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">선택약정</h7>
                                 <h7>{`${commaNumber(data.estimate_info.CONTRACT_SALE_AMOUNT)} 원`}</h7>
+                            </div>
+                            <div className="col d-flex justify-content-between" style={{marginTop:7}}>
+                                <span style={{fontSize:11, color:"#ff0000", fontWeight:"lighter", display:"inline-flex"}}>
+                                    <ReactSVG
+                                        src={process.env.PUBLIC_URL + "/assets/img/icons/arrow_down.svg"}
+                                        style={{height:10, width:10, fill:"#ff0000"}}
+                                    />
+                                    <span style={{marginLeft:5}}>공시지원금 선택시 선택약정 할인이 없습니다.</span>
+
+                                </span>
+                            </div>
+                            <div className="col d-flex justify-content-between">
+                                <span style={{fontSize:11, color:"#ff0000", fontWeight:"lighter", display:"inline-flex"}}>
+                                    <ReactSVG
+                                        src={process.env.PUBLIC_URL + "/assets/img/icons/arrow_down.svg"}
+                                        style={{height:10, width:10, fill:"#ff0000"}}
+                                    />
+                                    <span style={{marginLeft:5}}>가족, 결합할인은 매장에서 적용 할 수 있습니다.</span>
+
+                                </span>
+                            </div>
+
+                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
+
+                            </div>
+                            <div className="col d-flex justify-content-between" style={{marginTop:7}}>
+                                <span className = "estimate-body-text" style={{fontWeight:"bold"}}>월 요금 납부액</span>
+                                <span style={{fontWeight:"bold"}}>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</span>
                             </div>
                         </div>
                     </div>
@@ -153,9 +217,9 @@ class Estimate extends Component {
                                 <h7 className = "estimate-body-text">구매 메모</h7>
                             </div>
                             <div className="" style={{marginTop:7, textAlign:'center'}}>
-                                <input className="text-input" type="text"
+                                <textarea className="text-input" type="textarea"
                                        value = {data.estimate_info.MEMO}>
-                                </input>
+                                </textarea>
                             </div>
                         </div>
                     </div>

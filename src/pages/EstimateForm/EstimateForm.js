@@ -122,8 +122,6 @@ class EstimateForm extends Component {
             postCode: data.zonecode,
             detailAddr: data.roadAddress
         })
-
-        console.log(fullAddress);  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     }
 
     postCodeStyle() {
@@ -162,7 +160,6 @@ class EstimateForm extends Component {
 
             .then((response) => {
                     estimateSeq = response.data[0].result
-                    console.log(estimateSeq)
 
                 if(estimateSeq){
                     this.props.history.push(process.env.PUBLIC_URL + `/estimate/${estimateSeq}`)
@@ -173,6 +170,15 @@ class EstimateForm extends Component {
             .catch(error =>
                 this.setState({ errorMessage: error.message, isLoading: false })
             );
+    }
+
+    getDate() {
+        let date = new Date();
+        let year = date.getFullYear()
+        let month = ("0" + (1 + date.getMonth())).slice(-2);
+        let day = ("0" + date.getDate()).slice(-2);
+
+        return year+'.'+month+'.'+day
     }
 
     render() {
@@ -213,42 +219,47 @@ class EstimateForm extends Component {
         }
 
         return (
-            <div className="body-wrapper space-pt--70 space-pb--120">
+            <div className="body-wrapper space-pt--70 space-pb--15">
                 <div className="estimate-container">
-                    <div className="estimate-content-header border-bottom--thick border-dark">
+                    <div className="estimate-content-header">
                         <img
                             src={process.env.PUBLIC_URL + `/assets/img/icons/${icon}`}
                             className="img-fluid"
                             alt=""
                         />
-                        <h4 style={{alignSelf:"center"}}>{data.estimate_info.CARRIER_OMD_CODE} 견적서</h4>
+                        <h4 style={{alignSelf:"center", marginLeft:8}}> {data.estimate_info.CARRIER_OMD_CODE} 견적서
+                        </h4>
                     </div>
-
                     <div className="container-lg">
+                        <div className="border-bottom--thick border-dark" style={{marginBottom:15, textAlign:"end"}}>
+                            <span>기준일 : {this.getDate()}</span>
+                        </div>
                         <div className="estimate-title">
                             <div className="col d-flex justify-content-between">
-                             <h7 className = "estimate-title-text">{data.estimate_info.PRODUCT_GROUP_NAME}</h7>
+                             <span className = "estimate-title-text" style={{fontWeight:"bold"}}>{data.estimate_info.PRODUCT_GROUP_NAME}</span>
                             </div>
                             <div className="col d-flex justify-content-between">
-                                <h7 className = "estimate-title-text">최종 월 납부액</h7>
-                                <h7>{`${commaNumber(monthlyFee)} 원`}</h7>
+                                <span className = "estimate-title-text" style={{fontWeight:"bold"}}>최종 월 납부액</span>
+                                <span style={{fontWeight:"bold"}}>{`${commaNumber(monthlyFee)} 원`}</span>
                             </div>
                         </div>
                         <div className="estimate-body">
-                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
-                                <h7 className = "estimate-body-text">월 기기 납부액</h7>
-                                <h7>{`${commaNumber(deviceMonthlyFee)} 원`}</h7>
-                            </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">출고가</h7>
                                 <h7>{`${commaNumber(data.estimate_info.FACTORY_PRICE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">공시지원금</h7>
+                                <div className = "estimate-body-text">
+                                    공시지원금
+                                    <span> (-) </span>
+                                </div>
                                 <h7>{`${commaNumber(data.estimate_info.SUPPORT_FEE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">추가지원금</h7>
+                                <div className = "estimate-body-text">
+                                    추가지원금
+                                    <span> (-) </span>
+                                </div>
                                 <h7>
                                     <input className="text-input" style={{width:70, height:25, textAlign:'right'}} type="text"
                                            value = {addSupportFee}
@@ -258,7 +269,10 @@ class EstimateForm extends Component {
                                 </h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">매장지원금</h7>
+                                <div className = "estimate-body-text">
+                                    매장지원금
+                                    <span> (-) </span>
+                                </div>
                                 <h7>
                                     <input className="text-input" style={{width:70, height:25, textAlign:'right'}} type="text"
                                            value = {shopSupportFee}
@@ -267,23 +281,36 @@ class EstimateForm extends Component {
                                     <span> </span>원
                                 </h7>
                             </div>
+                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
+
+                            </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">할부원금</h7>
                                 <h7>{`${commaNumber(data.estimate_info.MODEL_PRICE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
-                                <h7 className = "estimate-body-text">할부이자</h7>
+                                <div className = "estimate-body-text">
+                                    할부이자
+                                    <span> (+) </span>
+                                </div>
                                 <h7>{`${commaNumber(data.estimate_info.INSTALLMENT_FEE)} 원`}</h7>
+                            </div>
+                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
+
+                            </div>
+                            <div className="col d-flex justify-content-between" style={{marginTop:7}}>
+                                <span className = "estimate-body-text" style={{fontWeight:"bold"}}>월 기기 납부액</span>
+                                <span style={{fontWeight:"bold"}}>{`${commaNumber(deviceMonthlyFee)} 원`}</span>
                             </div>
                         </div>
                         <div className="subscription-estimate-body">
-                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
-                                <h7 className = "estimate-body-text">월 요금 납부액</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</h7>
-                            </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">요금제명</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_NAME)}`}</h7>
+                                <span style={{textAlign:"end"}}>
+                                    <span>{`${commaNumber(data.estimate_info.SUBSCRIPTION_NAME)}`}</span>
+                                    <br></br>
+                                    <span style={{fontSize:11}}>(월 데이터 {data.estimate_info.DATA_AMOUNT})</span>
+                                </span>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">기본료</h7>
@@ -292,6 +319,34 @@ class EstimateForm extends Component {
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">선택약정</h7>
                                 <h7>{`${commaNumber(contractSaleAmount)} 원`}</h7>
+                            </div>
+                            <div className="col d-flex justify-content-between" style={{marginTop:7}}>
+                                <span style={{fontSize:11, color:"#ff0000", fontWeight:"lighter", display:"inline-flex"}}>
+                                    <ReactSVG
+                                        src={process.env.PUBLIC_URL + "/assets/img/icons/arrow_down.svg"}
+                                        style={{height:10, width:10, fill:"#ff0000"}}
+                                    />
+                                    <span style={{marginLeft:5}}>공시지원금 선택시 선택약정 할인이 없습니다.</span>
+
+                                </span>
+                            </div>
+                            <div className="col d-flex justify-content-between">
+                                <span style={{fontSize:11, color:"#ff0000", fontWeight:"lighter", display:"inline-flex"}}>
+                                    <ReactSVG
+                                        src={process.env.PUBLIC_URL + "/assets/img/icons/arrow_down.svg"}
+                                        style={{height:10, width:10, fill:"#ff0000"}}
+                                    />
+                                    <span style={{marginLeft:5}}>가족, 결합할인은 매장에서 적용 할 수 있습니다.</span>
+
+                                </span>
+                            </div>
+
+                            <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
+
+                            </div>
+                            <div className="col d-flex justify-content-between" style={{marginTop:7}}>
+                                <span className = "estimate-body-text" style={{fontWeight:"bold"}}>월 요금 납부액</span>
+                                <span style={{fontWeight:"bold"}}>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</span>
                             </div>
                         </div>
                     </div>
@@ -302,10 +357,10 @@ class EstimateForm extends Component {
                                 <h7 className = "estimate-body-text">추가 메모</h7>
                             </div>
                             <div className="" style={{marginTop:7, textAlign:'center'}}>
-                                <input className="text-input" type="text"
+                                <textarea className="text-input" type="text"
                                        value = {this.state.memo}
                                        onChange={(e) => this.setState({memo:e.target.value})}>
-                                </input>
+                                </textarea>
                             </div>
                         </div>
                     </div>
@@ -381,6 +436,9 @@ class EstimateForm extends Component {
                     </div>
 
                     <div className="memo-container border-bottom--thick border-dark">
+                    </div>
+
+                    <div className="memo-container">
                         <div className="estimate-body-memo border-0">
                             <div className="" style={{marginTop:7, textAlign:'center'}}>
                                 <button className="share-button"
@@ -398,7 +456,17 @@ class EstimateForm extends Component {
                                     }
                                     this.createEstimate(param)
                                 }}>
-                                    <h7 style={{color:'#0F4C81', fontWeight:'bold'}}>견적서 생성하기</h7>
+                                    <div style={{color:'#0F4C81', fontWeight:'bold', display:"inline-flex"}}>
+                                        <span>견적서 생성하기</span>
+                                        <div style={{paddingLeft: 10, fill:"#0F4C81"}}>
+                                          <ReactSVG
+                                              src={
+                                                  process.env.PUBLIC_URL +
+                                                  "/assets/img/icons/arrow-right.svg"
+                                              }
+                                          />
+                                        </div>
+                                    </div>
                                 </button>
                             </div>
                         </div>

@@ -269,16 +269,17 @@ class Product extends Component {
                           />
                         </div>
                         <div className="button-container">
-                            <button className="subscription-button" onClick={(en) =>
+                            <button className="subscription-button" style={{height:"100%"}} onClick={(en) =>
                             {
                                 this.toggleSubscriptionPopup(single.CARRIER_OMD_CODE)
                             }
                             }>
                               <div className="d-flex justify-content-around">
                                 <div>
-                                  {single.SUBSCRIPTION_NAME}
+                                    {single.SUBSCRIPTION_NAME}<br></br>
+                                    <span style={{color:"#0F4C81" }}>월 데이터 {single.DATA_AMOUNT}</span>
                                 </div>
-                                  <div className="row">
+                                  <div className="row" style={{alignItems:"center"}}>
                                     {commaNumber(single.SUBSCRIPTION_MONTHLY_FEE) + "원 "}
                                     <ReactSVG
                                         className="arrow-down"
@@ -289,9 +290,10 @@ class Product extends Component {
                             </button>
 
                             <Popup open={this.checkPopup(single)}
-                                 closeOnDocumentClick
-                                 modal nested
-                                close={!this.state.popupOn}
+                                   closeOnEscape={true}
+                                   closeOnDocumentClick={false}
+                                   modal nested
+                                   close={!this.state.popupOn}
                             >
                             {close => (
                                 <div className="container">

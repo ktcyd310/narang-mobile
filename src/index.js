@@ -32,27 +32,22 @@ axios
     .catch(error => console.log(error));
 
 function fetchDatas(){
-
-    console.log('this called')
-
     axios
         .get(process.env.PUBLIC_URL + "/data/filter.json")
         .then(response => {
-            console.log(response)
             store.dispatch(fetchFilter(response.data))
             axios.get(process.env.PUBLIC_URL + "/data/sortingList.json")
                 .then(response => {store.dispatch(fetchsortingList(response.data))
-                    console.log(response)
                     axios.get(process.env.PUBLIC_URL + "/data/filterList.json")
                         .then(response => {store.dispatch(fetchListFilter(response.data))
-                            console.log(response)
                             axios.get( process.env.REACT_APP_API_URL + "/product/list", {params:
                                         {
                                             "company_code": "ALL",
                                             "factory_price_min": 100000,
                                             "factory_price_max": 2500000,
                                             "subscription_group_id": 9,
-                                            "plan_type_list": "SUPPORT"
+                                            "plan_type_list": "SUPPORT",
+                                            "sorting_field": "RECOMMENDED"
                                         }
                                 } )
                                 .then(response => {store.dispatch(fetchOemProductList(response.data))

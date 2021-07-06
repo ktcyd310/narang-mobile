@@ -213,6 +213,12 @@
   "support_sorting_dropdown_list": [
     {
       "CODE_CATEGORY_NAME": "공시 정렬",
+      "CODE_VALUE1": "추천순",
+      "CODE_VALUE2": "RECOMMENDED",
+      "CODE_VALUE3": "DESC"
+    },
+    {
+      "CODE_CATEGORY_NAME": "공시 정렬",
       "CODE_VALUE1": "최근 출시순",
       "CODE_VALUE2": "RELEASE_DATE",
       "CODE_VALUE3": "DESC"
@@ -237,6 +243,12 @@
     }
   ],
   "contract_sorting_dropdown_list": [
+    {
+      "CODE_CATEGORY_NAME": "선택약정 정렬",
+      "CODE_VALUE1": "추천순",
+      "CODE_VALUE2": "RECOMMENDED",
+      "CODE_VALUE3": "DESC"
+    },
     {
       "CODE_CATEGORY_NAME": "선택약정 정렬",
       "CODE_VALUE1": "최근 출시순",
