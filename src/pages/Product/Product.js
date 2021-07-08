@@ -299,15 +299,21 @@ class Product extends Component {
                                 <div className="container">
                                   <div className="modal-dialog">
                                     <div className="modal-content">
-                                      <div className="modal-header">
-                                        <h7 className="modal-title">요금제를 선택하세요</h7>
-                                        <button type="button" className="close" data-dismiss="modal" onClick={() => {this.setState({popupOn:false, popupTarget:''})}}>×</button>
+                                      <div className="modal-header" style={{position:"sticky"}}>
+                                          <h7 className="modal-title" style={{textAlign:"center", color:"#0F4C81", fontWeight:"bold", width:"100%"}}>요금제를 선택하세요</h7>
+                                          <br></br>
+                                          <h7 className="modal-title" style={{textAlign:"center", color:"#0F4C81", fontWeight:"bold", width:"100%"}}></h7>
+
+                                          <button type="button" className="close" data-dismiss="modal" onClick={() => {this.setState({popupOn:false, popupTarget:''})}}>×</button>
                                       </div>
+                                        <div className="container-lg" style={{overflowY:"scroll"}}>
+                                            <div className="" style={{marginTop:7, textAlign:'center', width:"70vw"}}>
 
-                                      <SubscriptionPopup param={{network_type_code: single.NW_TYPE_CODE, carrier_omd_code: single.CARRIER_OMD_CODE}}>
+                                            </div>
+                                              <SubscriptionPopup param={{network_type_code: single.NW_TYPE_CODE, carrier_omd_code: single.CARRIER_OMD_CODE}}>
 
-                                      </SubscriptionPopup>
-
+                                              </SubscriptionPopup>
+                                        </div>
                                     </div>
                                   </div>
                                 </div>

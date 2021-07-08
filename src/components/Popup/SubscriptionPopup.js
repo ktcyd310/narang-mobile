@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {setDetailParam} from "../../redux/actions/detailParamActions";
 import {connect} from "react-redux";
 import {Preloader} from "../index";
+import commaNumber from "../../utils/commaNumber";
 
 class SubscriptionPopup extends Component {
     constructor(props) {
@@ -18,8 +19,17 @@ class SubscriptionPopup extends Component {
     }
 
     getPopupData() {
+
+
+        let param = {
+            ...this.props.param,
+            product_group_id : this.props.detailParam.product_group_id
+        }
+
+        console.log(param)
+
         axios
-            .get(process.env.REACT_APP_API_URL + "/product/subscription/list", {params: this.props.param})
+            .get(process.env.REACT_APP_API_URL + "/product/subscription/list", {params: param})
 
             .then(response =>
                 this.setState({ data: response.data, isLoading: false })
@@ -72,23 +82,33 @@ class SubscriptionPopup extends Component {
         }
 
         return (
-            <div className="model-body">
-                <div className="content">
-                    <ul className="list-group">
-                        {subscriptionList.map(single => {
-                            return (
-                                <button type="button" className="list-group-item list-group-item-action" onClick={() => {
-                                    this.subscriptionParamChange(this.props.param.carrier_omd_code, single.SUBSCRIPTION_ID)
-                                }}>
-                                    {single.SUBSCRIPTION_NAME}
-                                </button>
 
-                            )
-                        })}
+                <div className="model-body" style={{height:"50vh"}}>
+                    <div className="content">
+                        <ul className="list-group">
+                            {subscriptionList.map(single => {
+                                return (
+                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => {
+                                        this.subscriptionParamChange(this.props.param.carrier_omd_code, single.SUBSCRIPTION_ID)
+                                    }}>
+                                        <div className="d-flex justify-content-between">
+                                            <div>
+                                                {single.SUBSCRIPTION_NAME}
+                                                <br></br>
+                                                <span style={{color:"#0F4C81"}}>월 데이터 {single.DATA_AMOUNT}</span>
+                                            </div>
+                                            <div style={{display:"flex", alignItems:"center"}}>
+                                                <span>{commaNumber(single.SUBSCRIPTION_MONTHLY_FEE)}원</span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                )
+                            })
+                            }
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
         )
     }
 }

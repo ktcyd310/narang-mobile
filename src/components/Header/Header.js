@@ -148,13 +148,13 @@ class Header extends Component {
                     <div className="modal-dialog">
                       <div className="modal-content">
                         <div className="modal-header">
-                          <div className="modal-title" style={{textAlign:"center", color:"#0F4C81", fontWeight:"bold"}}>
+                          <div className="modal-title" style={{textAlign:"center", color:"#0F4C81", fontWeight:"bold", width:"100%"}}>
                             사용하시면서 의견이나 문의를<br></br>
                             자유롭게 남겨주세요.
                           </div>
                         </div>
                         <div className="container-lg">
-                          <div className="" style={{marginTop:7, textAlign:'center'}}>
+                          <div className="" style={{marginTop:7, textAlign:'center', width:"70vw"}}>
                             <textarea id= "qna-content" className="qna-input" type="textarea">
                             </textarea>
                           </div>
