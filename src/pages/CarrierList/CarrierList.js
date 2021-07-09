@@ -58,7 +58,14 @@ class CarrierList extends Component {
 
 
     return (
-      <div className="body-wrapper space-pt--70 space-pb--120">
+      <div className="body-wrapper space-pt--60 space-pb--120">
+        <div style={{textAlign:"center", backgroundColor:"#F9F9F9", fontSize:"small"}}>
+          <span>아래 정보는 </span>
+          <span style={{color:"#0F4C81", fontWeight:"bold"}}>통신 3사 공식 홈페이지 정가 </span>
+          <span>입니다.</span>
+          <br></br>
+          <span>휴대폰 정가 확인부터 견적서까지, 바로 확인하세요.</span>
+        </div>
         <div className="shop-header bg-color--white">
           <div className="container space-y--15">
             <div className="row align-items-center">
