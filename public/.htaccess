@@ -1,4 +1,6 @@
 Options -MultiViews
     RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^www.narang-buy.com [NC]
+    RewriteRule ^(.*)$ http://narang-buy.com/$1 [L,R=301]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.html [QSA,L]

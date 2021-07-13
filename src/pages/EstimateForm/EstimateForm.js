@@ -20,6 +20,8 @@ class EstimateForm extends Component {
             popupTarget: '',
             addSupportFee: '',
             shopSupportFee: '',
+            modelPrice:'',
+            installmentFee: '',
             memo: '',
             shopName: '',
             postCode: '',
@@ -63,7 +65,10 @@ class EstimateForm extends Component {
                     data: response.data,
                     isLoading: false,
                     deviceMonthlyFee: response.data.estimate_info.DEVICE_MONTHLY_FEE,
-                    monthlyFee: response.data.estimate_info.MONTHLY_FEE
+                    addSupportFee: response.data.estimate_info.ADD_SUPPORT_FEE,
+                    monthlyFee: response.data.estimate_info.MONTHLY_FEE,
+                    modelPrice: response.data.estimate_info.MODEL_PRICE,
+                    installmentFee: response.data.estimate_info.INSTALLMENT_FEE
                 })
             )
             .catch(error =>
@@ -92,16 +97,48 @@ class EstimateForm extends Component {
 
         }
 
+        let modelPrice = this.state.data.estimate_info.FACTORY_PRICE - this.state.data.estimate_info.SUPPORT_FEE - addSupportFee - shopSupportFee
+        let installmentFee = this.calculateInstallmentFee(modelPrice, 5.9, this.state.data.estimate_info.INSTALLMENT_TERM)
+
+
+        let deviceMonthlyFee = Math.round((modelPrice + installmentFee)/this.state.data.estimate_info.INSTALLMENT_TERM,0)
+
+        if(deviceMonthlyFee < 0){
+            deviceMonthlyFee = 0;
+        }
+
+        let monthlyFee = this.state.data.estimate_info.SUBSCRIPTION_MONTHLY_FEE + deviceMonthlyFee
+
         this.setState({
-            deviceMonthlyFee: this.state.data.estimate_info.DEVICE_MONTHLY_FEE
-                -Math.round((addSupportFee/installmentTerm),0)
-                -Math.round((shopSupportFee/installmentTerm),0),
-            monthlyFee: this.state.data.estimate_info.MONTHLY_FEE
-                -Math.round((addSupportFee/installmentTerm),0)
-                -Math.round((shopSupportFee/installmentTerm),0),
+            modelPrice: modelPrice,
+            installmentFee: installmentFee,
+            deviceMonthlyFee: deviceMonthlyFee,
+            monthlyFee: monthlyFee,
         }
         )
+
     }
+
+    calculateInstallmentFee(modelPrice, installmentRate, installmentTerm) {
+
+        installmentRate = installmentRate/100;
+        let monthlyInstallmentPrice = 0;
+        let monthlyInstallmentPriceLeft = modelPrice;
+        let monthlyTotalFee = modelPrice * (installmentRate/12)*Math.pow((1+installmentRate/12),installmentTerm)/(Math.pow((1+installmentRate/12),installmentTerm)-1);
+        let monthlyInstallmentInterest = 0;
+        let totalInstallmentInterest = 0
+
+        for (let i = 1; i <= installmentTerm; i++){
+            monthlyInstallmentInterest = monthlyInstallmentPriceLeft * installmentRate/12
+            monthlyInstallmentPrice = monthlyTotalFee - monthlyInstallmentInterest
+            monthlyInstallmentPriceLeft = monthlyInstallmentPriceLeft - monthlyInstallmentPrice
+            totalInstallmentInterest = totalInstallmentInterest + monthlyInstallmentInterest
+        }
+
+        return Math.round(totalInstallmentInterest,0)
+
+    }
+
 
     addrComplete(data) {
         let fullAddress = data.address;
@@ -182,7 +219,7 @@ class EstimateForm extends Component {
     }
 
     render() {
-        const { data, deviceMonthlyFee, monthlyFee, addSupportFee, shopSupportFee } = this.state;
+        const { data, deviceMonthlyFee, monthlyFee, addSupportFee, shopSupportFee, modelPrice, installmentFee } = this.state;
 
         if(data||this.state.isLoading!==true){
 
@@ -211,12 +248,16 @@ class EstimateForm extends Component {
         }
 
         let contractSaleAmount = ''
+        let disabled = false
 
         if(data.estimate_info.PLAN_TYPE==='CONTRACT'){
             contractSaleAmount = data.estimate_info.CONTRACT_SALE_AMOUNT
+            disabled = true
         }else{
             contractSaleAmount = 0
         }
+
+
 
         return (
             <div className="body-wrapper space-pt--70 space-pb--15">
@@ -263,7 +304,11 @@ class EstimateForm extends Component {
                                 <h7>
                                     <input className="text-input" style={{width:70, height:25, textAlign:'right'}} type="text"
                                            value = {addSupportFee}
-                                           onChange={(e) => this.recalculate(e, data.estimate_info.INSTALLMENT_TERM, 'ADD')}>
+                                           onChange={(e) => this.recalculate(e, data.estimate_info.INSTALLMENT_TERM, 'ADD')}
+                                           disabled = {disabled}
+
+                                    >
+
                                     </input>
                                     <span> </span>원
                                 </h7>
@@ -286,14 +331,14 @@ class EstimateForm extends Component {
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">할부원금</h7>
-                                <h7>{`${commaNumber(data.estimate_info.MODEL_PRICE)} 원`}</h7>
+                                <h7>{`${commaNumber(modelPrice)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <div className = "estimate-body-text">
                                     할부이자
                                     <span> (+) </span>
                                 </div>
-                                <h7>{`${commaNumber(data.estimate_info.INSTALLMENT_FEE)} 원`}</h7>
+                                <h7>{`${commaNumber(installmentFee)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between border-bottom--medium border-dark" style={{paddingBottom:7}}>
 
@@ -314,7 +359,7 @@ class EstimateForm extends Component {
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">기본료</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_FEE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">선택약정</h7>
@@ -452,7 +497,8 @@ class EstimateForm extends Component {
                                         shop_name: this.state.shopName,
                                         post_code: this.state.postCode,
                                         detail_addr: this.state.detailAddr,
-                                        detail_addr1: this.state.detailAddr1
+                                        detail_addr1: this.state.detailAddr1,
+                                        plan_type: data.estimate_info.PLAN_TYPE
                                     }
                                     this.createEstimate(param)
                                 }}>

@@ -174,7 +174,7 @@ class Estimate extends Component {
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">기본료</h7>
-                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_MONTHLY_FEE)} 원`}</h7>
+                                <h7>{`${commaNumber(data.estimate_info.SUBSCRIPTION_FEE)} 원`}</h7>
                             </div>
                             <div className="col d-flex justify-content-between" style={{marginTop:7}}>
                                 <h7 className = "estimate-body-text">선택약정</h7>

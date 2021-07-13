@@ -49,6 +49,12 @@ function App() {
                 component={Estimate}
                 layout={DefaultLayout}
             />
+            <AppRoute
+              path={process.env.PUBLIC_URL + "/_ah_/warmup"}
+              component={CarrierList}
+              layout={DefaultLayout}
+            />
+
             <AppRoute exact component={NotFound} layout={DefaultLayout} />
           </Switch>
         </Suspense>

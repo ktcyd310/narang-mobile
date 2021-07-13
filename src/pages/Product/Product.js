@@ -94,7 +94,7 @@ class Product extends Component {
         childList = data.child_product_list.filter(e => e.TAB === "CONTRACT");
       }
 
-    childList = childList.filter(e => e.INSTALLMENT_TERM === this.props.detailParam.installment_term);
+    childList = childList.filter(e => e.INSTALLMENT_TERM == this.props.detailParam.installment_term);
 
     }else{
       return (
@@ -229,9 +229,6 @@ class Product extends Component {
           </div>
         </div>
 
-
-        {/*===공시 요금제 및 금액 노출===
-        TODO : 자상품 없는 케이스 노출 처리*/}
         {
           childList?(
                   childList.map(single => {

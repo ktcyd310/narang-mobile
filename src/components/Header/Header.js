@@ -150,7 +150,8 @@ class Header extends Component {
                         <div className="modal-header">
                           <div className="modal-title" style={{textAlign:"center", color:"#0F4C81", fontWeight:"bold", width:"100%"}}>
                             사용하시면서 의견이나 문의를<br></br>
-                            자유롭게 남겨주세요.
+                            자유롭게 남겨주세요.<br></br>
+                            <a href="mailto:contact@narangcompany.com">(contact@narangcompany.com)</a>
                           </div>
                         </div>
                         <div className="container-lg">
