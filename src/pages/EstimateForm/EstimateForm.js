@@ -60,16 +60,31 @@ class EstimateForm extends Component {
         axios
             .get(process.env.REACT_APP_API_URL + "/customer/estimate", {params : {child_product_id: this.props.match.params.id}})
 
-            .then(response =>
+            .then(response => {
+
+                let modelPrice = response.data.estimate_info.FACTORY_PRICE - response.data.estimate_info.SUPPORT_FEE - response.data.estimate_info.ADD_SUPPORT_FEE
+                let installmentFee = this.calculateInstallmentFee(modelPrice, 5.9, response.data.estimate_info.INSTALLMENT_TERM)
+                let deviceMonthlyFee = Math.round((modelPrice + installmentFee)/response.data.estimate_info.INSTALLMENT_TERM,0)
+
+                if(deviceMonthlyFee < 0){
+                    deviceMonthlyFee = 0;
+                }
+
+                let monthlyFee = response.data.estimate_info.SUBSCRIPTION_MONTHLY_FEE + deviceMonthlyFee
+
+                console.log(monthlyFee)
+
+
                 this.setState({
                     data: response.data,
                     isLoading: false,
-                    deviceMonthlyFee: response.data.estimate_info.DEVICE_MONTHLY_FEE,
+                    deviceMonthlyFee: deviceMonthlyFee,
                     addSupportFee: response.data.estimate_info.ADD_SUPPORT_FEE,
-                    monthlyFee: response.data.estimate_info.MONTHLY_FEE,
-                    modelPrice: response.data.estimate_info.MODEL_PRICE,
-                    installmentFee: response.data.estimate_info.INSTALLMENT_FEE
+                    monthlyFee: monthlyFee,
+                    modelPrice: modelPrice,
+                    installmentFee: installmentFee
                 })
+                }
             )
             .catch(error =>
                 this.setState({ errorMessage: error.message, isLoading: false })

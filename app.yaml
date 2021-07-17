@@ -22,8 +22,6 @@ automatic_scaling:
 inbound_services:
   - warmup
 
-
-
 handlers:
   - url: /.*
     secure: always
