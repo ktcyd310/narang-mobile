@@ -17,6 +17,7 @@ import { fetchOemProductList } from "./redux/actions/oemProductListActions"
 import { fetchsortingList } from "./redux/actions/sortingListActions"
 import { fetchListFilter } from "./redux/actions/filterListActions";
 import {fetchFilter} from "./redux/actions/filterActions";
+import {fetchOmdProductList} from "./redux/actions/omdProductListActions";
 
 
 
@@ -69,6 +70,13 @@ function fetchDatas(){
                 })
                 .catch(error => console.log(error));
 
+        })
+        .catch(error => console.log(error));
+
+    axios
+        .get(process.env.REACT_APP_API_DEV_URL + "/omdProduct/list")
+        .then(response => {
+            store.dispatch(fetchOmdProductList(response.data))
         })
         .catch(error => console.log(error));
 }

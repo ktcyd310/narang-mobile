@@ -130,60 +130,60 @@ class Header extends Component {
         />
 
 
-        <div className="fab-container">
-          <div className="fab fab-icon-holder">
-            <i className="fas fa-question" onClick={() => {
-                this.toggleModalPopup()
-            }}
-            ></i>
+        {/*<div className="fab-container">*/}
+        {/*  <div className="fab fab-icon-holder">*/}
+        {/*    <i className="fas fa-question" onClick={() => {*/}
+        {/*        this.toggleModalPopup()*/}
+        {/*    }}*/}
+        {/*    ></i>*/}
 
-            <Popup open={this.checkPopup()}
-                   closeOnEscape={true}
-                   closeOnDocumentClick={false}
-                   modal nested
-                   close={!this.state.popupOn}
-            >
-              {close => (
-                  <div className="container">
-                    <div className="modal-dialog">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <div className="modal-title" style={{textAlign:"center", color:"#0F4C81", fontWeight:"bold", width:"100%"}}>
-                            사용하시면서 의견이나 문의를<br></br>
-                            자유롭게 남겨주세요.<br></br>
-                            <a href="mailto:contact@narangcompany.com">(contact@narangcompany.com)</a>
-                          </div>
-                        </div>
-                        <div className="container-lg">
-                          <div className="" style={{marginTop:7, textAlign:'center', width:"70vw"}}>
-                            <textarea id= "qna-content" className="qna-input" type="textarea">
-                            </textarea>
-                          </div>
+        {/*    <Popup open={this.checkPopup()}*/}
+        {/*           closeOnEscape={true}*/}
+        {/*           closeOnDocumentClick={false}*/}
+        {/*           modal nested*/}
+        {/*           close={!this.state.popupOn}*/}
+        {/*    >*/}
+        {/*      {close => (*/}
+        {/*          <div className="container">*/}
+        {/*            <div className="modal-dialog">*/}
+        {/*              <div className="modal-content">*/}
+        {/*                <div className="modal-header">*/}
+        {/*                  <div className="modal-title" style={{textAlign:"center", color:"#0F4C81", fontWeight:"bold", width:"100%"}}>*/}
+        {/*                    사용하시면서 의견이나 문의를<br></br>*/}
+        {/*                    자유롭게 남겨주세요.<br></br>*/}
+        {/*                    <a href="mailto:contact@narangcompany.com">(contact@narangcompany.com)</a>*/}
+        {/*                  </div>*/}
+        {/*                </div>*/}
+        {/*                <div className="container-lg">*/}
+        {/*                  <div className="" style={{marginTop:7, textAlign:'center', width:"70vw"}}>*/}
+        {/*                    <textarea id= "qna-content" className="qna-input" type="textarea">*/}
+        {/*                    </textarea>*/}
+        {/*                  </div>*/}
 
-                          <div style={{textAlign:"end"}}>
-                            <button className="modal-button" onClick={() => {
+        {/*                  <div style={{textAlign:"end"}}>*/}
+        {/*                    <button className="modal-button" onClick={() => {*/}
 
-                              let content = document.getElementById('qna-content').value;
+        {/*                      let content = document.getElementById('qna-content').value;*/}
 
-                              this.saveQnA(document.location.href, content)
-                              this.setState({popupOn:false, popupTarget:''})
+        {/*                      this.saveQnA(document.location.href, content)*/}
+        {/*                      this.setState({popupOn:false, popupTarget:''})*/}
 
-                            }}
-                            > 저장 </button>
-                            <button type="button" className="modal-button" data-dismiss="modal" onClick={() => {this.setState({popupOn:false, popupTarget:''})}}>취소</button>
-                          </div>
+        {/*                    }}*/}
+        {/*                    > 저장 </button>*/}
+        {/*                    <button type="button" className="modal-button" data-dismiss="modal" onClick={() => {this.setState({popupOn:false, popupTarget:''})}}>취소</button>*/}
+        {/*                  </div>*/}
 
-                        </div>
+        {/*                </div>*/}
 
-                      </div>
-                    </div>
-                  </div>
-              )}
-            </Popup>
+        {/*              </div>*/}
+        {/*            </div>*/}
+        {/*          </div>*/}
+        {/*      )}*/}
+        {/*    </Popup>*/}
 
 
-          </div>
-        </div>
+        {/*  </div>*/}
+        {/*</div>*/}
 
       </header>
     );
