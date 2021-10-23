@@ -28,7 +28,7 @@ const store = createStore(
 );
 
 axios
-    .get(process.env.REACT_APP_API_URL + "/home")
+    .get(process.env.REACT_APP_API_DEV_URL + "/home")
     .then(response => store.dispatch(fetchEventList(response.data)))
     .catch(error => console.log(error));
 
@@ -41,7 +41,7 @@ function fetchDatas(){
                 .then(response => {store.dispatch(fetchsortingList(response.data))
                     axios.get(process.env.PUBLIC_URL + "/data/filterList.json")
                         .then(response => {store.dispatch(fetchListFilter(response.data))
-                            axios.get( process.env.REACT_APP_API_URL + "/product/list", {params:
+                            axios.get( process.env.REACT_APP_API_DEV_URL + "/product/list", {params:
                                         {
                                             "company_code": "ALL",
                                             "factory_price_min": 100000,
@@ -52,19 +52,25 @@ function fetchDatas(){
                                         }
                                 } )
                                 .then(response => {store.dispatch(fetchOemProductList(response.data))
-                                    return new Promise(function(resolve, reject){
-                                        resolve(
-                                            ReactDOM.render(
-                                                <Provider store={store}>
-                                                    <App />
-                                                </Provider>,
-                                                document.getElementById("root")
-                                            )
-                                        )
-                                    });
+                                    axios.get(process.env.REACT_APP_API_DEV_URL + "/omdProduct/list")
+                                         .then(response => {
+                                            store.dispatch(fetchOmdProductList(response.data))
+
+                                            return new Promise(function(resolve, reject){
+                                                                                    resolve(
+                                                                                        ReactDOM.render(
+                                                                                            <Provider store={store}>
+                                                                                                <App />
+                                                                                            </Provider>,
+                                                                                            document.getElementById("root")
+                                                                                        )
+                                                                                    )
+                                                                                });
+
+                                          })
+                                        .catch(error => console.log(error));
                                 })
                                 .catch(error => console.log(error));
-
                         })
                         .catch(error => console.log(error));
                 })
@@ -73,12 +79,7 @@ function fetchDatas(){
         })
         .catch(error => console.log(error));
 
-    axios
-        .get(process.env.REACT_APP_API_DEV_URL + "/omdProduct/list")
-        .then(response => {
-            store.dispatch(fetchOmdProductList(response.data))
-        })
-        .catch(error => console.log(error));
+
 }
 
 fetchDatas()

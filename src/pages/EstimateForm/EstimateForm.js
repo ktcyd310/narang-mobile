@@ -48,7 +48,7 @@ class EstimateForm extends Component {
         }
     }
 
-    //await axios.get( process.env.REACT_APP_API_URL + "/product/list", {params: parameter} )
+    //await axios.get( process.env.REACT_APP_API_DEV_URL + "/product/list", {params: parameter} )
 
     checkData() {
         if(!this.state.data){
@@ -58,7 +58,7 @@ class EstimateForm extends Component {
 
     getEstimateData() {
         axios
-            .get(process.env.REACT_APP_API_URL + "/customer/estimate", {params : {child_product_id: this.props.match.params.id}})
+            .get(process.env.REACT_APP_API_DEV_URL + "/customer/estimate", {params : {child_product_id: this.props.match.params.id}})
 
             .then(response => {
 
@@ -206,7 +206,7 @@ class EstimateForm extends Component {
         axios
             .request({
                 method: 'POST',
-                url: process.env.REACT_APP_API_URL+`/customer/estimate/create`,
+                url: process.env.REACT_APP_API_DEV_URL+`/customer/estimate/create`,
                 data: qs.stringify(param)
             })
 

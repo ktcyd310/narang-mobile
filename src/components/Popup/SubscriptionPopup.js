@@ -29,7 +29,7 @@ class SubscriptionPopup extends Component {
         console.log(param)
 
         axios
-            .get(process.env.REACT_APP_API_URL + "/product/subscription/list", {params: param})
+            .get(process.env.REACT_APP_API_DEV_URL + "/product/subscription/list", {params: param})
 
             .then(response =>
                 this.setState({ data: response.data, isLoading: false })

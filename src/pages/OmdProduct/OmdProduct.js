@@ -67,8 +67,12 @@ class OmdProduct extends Component {
         let productInfo = ''
         let usedPriceInfo = ''
 
+        var time = new Date();
+        var currentTime = time.getHours() + ':' + time.getMinutes()
+
         if(data||this.state.isLoading!==true){
             productInfo = data.omd_product_info.filter(e => e.COLOR_HEX == this.state.colorHex)
+            //productInfo = data.omd_product_info
 
             colorList = productInfo[0].COLOR_LIST.split(', ')
             childList = data.omd_child_product_list.filter(e => e.COLOR_HEX == this.state.colorHex)
@@ -146,11 +150,13 @@ class OmdProduct extends Component {
                     <div
                         style={{backgroundColor: `rgb(249, 249, 249)`, fontSize: 'small', marginTop: 20, marginBottom: 20, marginLeft: 2, marginRight: 2, padding: 8}}>
                         <span style={{color: `rgb(0, 0, 0)`, fontWeight: 'bold'}}>매일 바뀌는 가격을 확인하세요! </span><br/>
-                        <span style={{fontSize:12}}>지금 나랑살래에서 자급제 핸드폰 가격 비교하고 <br/>동네매장 대비
-                            <strong style={{color: `rgb(15, 76, 129)`}}>최대 162,628원</strong> 저렴하게 구매하세요
+                        <span style={{fontSize:12}}>지금 나랑살래에서 자급제 휴대폰 가격 비교하고 <br/>
+                        <strong style={{color: `rgb(15, 76, 129)`}}>오늘 {currentTime} 기준</strong> 가장 저렴하게 구매하세요
                         </span>
                     </div>
 
+                    <span style={{color: `rgb(0, 0, 0)`, fontWeight: 'bold', marginLeft: 15}}>실시간 기기 최저가</span>
+                    <div className="container space-y--5"></div>
                     <div className="omd-detail-container-wrap">
 
                     {
@@ -158,6 +164,7 @@ class OmdProduct extends Component {
                                 childList.map(single => {
 
                                     let icon = ''
+                                    let discountCode = ''
                                     switch(single.OMD_CODE){
 
                                         case 'COUPANG' :
@@ -184,15 +191,34 @@ class OmdProduct extends Component {
                                             icon = 'Agency_logo.png';
                                             break;
 
+                                        case 'SAMSUNG' :
+                                            icon = 'Samsung_logo.png';
+                                            break;
+
 
                                         default :
                                             break;
 
                                     }
 
+
+                                    switch(single.DISCOUNT_CODE) {
+
+                                        case 'BASIC' :
+                                            discountCode = '기본';
+                                            break;
+
+                                        case 'CARD' :
+                                            discountCode = '카드할인';
+                                            break;
+
+                                        default :
+                                            break;
+                                    }
+
                                     return (
 
-                                            <div className="omd-detail-container">
+                                        <a className="omd-detail-container" href={single.PRODUCT_LINK}>
                                             <div className="container-large">
                                                 <div className="col">
                                                     <div className="">
@@ -205,22 +231,21 @@ class OmdProduct extends Component {
                                                             />
                                                             </div>
                                                             <div className="row-list">
-                                                                <div className="row-big">카드할인</div>
+                                                                <div className="row-big">{discountCode}</div>
                                                                 <div className="row-small"> {(single.DISCOUNT_DESC)}</div>
                                                             </div>
                                                             <div className=" row-list">
                                                                 <div className="row-big">
                                                                     {commaNumber(single.PRICE) + "원 "}
                                                                 </div>
-                                                                <div className="row-small"> 에어팟 할인</div>
+                                                                <div className="row-small"> {(single.DISCOUNT_DESC1)}</div>
                                                             </div>
                                                             <img src={process.env.PUBLIC_URL + `/assets/img/icons/pointer.png`} className="img-fluid-pointer" alt=""/>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
-                                        </div>
+                                        </a>
 
 
 
@@ -234,74 +259,116 @@ class OmdProduct extends Component {
                             )
                     }
                     </div>
+
+                    <div className="container space-y--10"></div>
+                        <span style={{color: `rgb(0, 0, 0)`, fontWeight: 'bold', marginLeft: 15}}>예상 1년 후 중고가격</span>
+                    <div className="container space-mt--10"></div>
+
+
                     <div className="omd-detail-container-wrap"
                          style={{backgroundColor: `rgb(249, 249, 249)`, fontSize: 'small', marginBottom: 2, padding: 1}}>
 
-                        {
-                            usedPriceInfo?(
-                                usedPriceInfo.map(single => {
-
-                                    let icon = ''
-                                    switch(single.GRADE){
-
-                                        case 'A' :
-                                            icon = 'A_Grade.png';
-                                            break;
-
-                                        case 'B' :
-                                            icon = 'B_Grade.png';
-                                            break;
-
-                                        case 'C' :
-                                            icon = 'C_Grade.png';
-                                            break;
-
-                                        case 'D' :
-                                            icon = 'D_Grade.png';
-                                            break;
-
-                                        default :
-                                            break;
-
-                                    }
-
-                                    return (
-
-                                            <div className="usedPhone-detail-container">
-                                                <div className="container-large">
-                                                    <div className="col">
-                                                        <div className="">
-                                                            <div className="d-flex justify-content-between">
-                                                                <div className="logo-image">
-                                                                    <img src={process.env.PUBLIC_URL + `/assets/img/icons/${icon}`} className="image-fluid-logo"
-                                                                         alt=""/>
-                                                                </div>
-                                                                <div className="row-list">
-                                                                    <div className="row-big"> {single.GRADE_DESC}</div>
-                                                                    <div className="row-small">{single.GRADE_DETAIL}</div>
-                                                                </div>
-                                                                <div className="row-list">
-                                                                    <div className="row-big"> {commaNumber(single.PRICE) + "원 "}</div>
-                                                                    <div className="row-small">
-                                                                    </div>
-                                                                </div>
-                                                                <img src="" className="img-fluid" alt=""
-                                                                     style={{width: 16, height: 'fit-content', paddingTop:15}}/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                        <div className="usedPhone-detail-container">
+                            <div className="container-large">
+                                <div className="col">
+                                    <div className="">
+                                        <div className="d-flex justify-content-between">
+                                            <div className="logo-image">
+                                                <img src={process.env.PUBLIC_URL + `/assets/img/icons/A_Grade.png`} className="image-fluid-logo"
+                                                     alt=""/>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big">관리최상</div>
+                                                <div className="row-small">액정/뒷판 미세 흠집</div>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big"> {commaNumber(usedPriceInfo[0].GRADE_A) + "원 "}</div>
+                                                <div className="row-small">
                                                 </div>
                                             </div>
-
-                                        )})
-                                ):
-                                (
-                                    <div>
-                                        Not Found
+                                            <img src="" className="img-fluid" alt=""
+                                                 style={{width: 16, height: 'fit-content', paddingTop:15}}/>
+                                        </div>
                                     </div>
-                                )
-                        }
-
+                                </div>
+                            </div>
+                        </div>
+                        <div className="usedPhone-detail-container">
+                            <div className="container-large">
+                                <div className="col">
+                                    <div className="">
+                                        <div className="d-flex justify-content-between">
+                                            <div className="logo-image">
+                                                <img src={process.env.PUBLIC_URL + `/assets/img/icons/B_Grade.png`} className="image-fluid-logo"
+                                                     alt=""/>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big">관리적당</div>
+                                                <div className="row-small">액정/뒷판 미세흠집, 녹음어플장애, 카메라멍</div>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big"> {commaNumber(usedPriceInfo[0].GRADE_B) + "원 "}</div>
+                                                <div className="row-small">
+                                                </div>
+                                            </div>
+                                            <img src="" className="img-fluid" alt=""
+                                                 style={{width: 16, height: 'fit-content', paddingTop:15}}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="usedPhone-detail-container">
+                            <div className="container-large">
+                                <div className="col">
+                                    <div className="">
+                                        <div className="d-flex justify-content-between">
+                                            <div className="logo-image">
+                                                <img src={process.env.PUBLIC_URL + `/assets/img/icons/C_Grade.png`} className="image-fluid-logo"
+                                                     alt=""/>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big">아차차</div>
+                                                <div className="row-small">액정/뒷판 파손, 강잔상,GPS오류, LCD백화 등</div>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big"> {commaNumber(usedPriceInfo[0].GRADE_C) + "원 "}</div>
+                                                <div className="row-small">
+                                                </div>
+                                            </div>
+                                            <img src="" className="img-fluid" alt=""
+                                                 style={{width: 16, height: 'fit-content', paddingTop:15}}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="usedPhone-detail-container">
+                            <div className="container-large">
+                                <div className="col">
+                                    <div className="">
+                                        <div className="d-flex justify-content-between">
+                                            <div className="logo-image">
+                                                <img src={process.env.PUBLIC_URL + `/assets/img/icons/D_Grade.png`} className="image-fluid-logo"
+                                                     alt=""/>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big">신경안씀</div>
+                                                <div className="row-small">C등급 기준 +베젤 휨, LCD잔상 등</div>
+                                            </div>
+                                            <div className="row-list">
+                                                <div className="row-big"> {commaNumber(usedPriceInfo[0].GRADE_D) + "원 "}</div>
+                                                <div className="row-small">
+                                                </div>
+                                            </div>
+                                            <img src="" className="img-fluid" alt=""
+                                                 style={{width: 16, height: 'fit-content', paddingTop:15}}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style={{backgroundColor: `rgb(249, 249, 249)`, fontSize: 11, marginLeft: 10, padding: 8, color: "#a0a1a7"}}>해당 기종의 출시일, 용량, 등급등을 고려한 빅데이터로 매일 감가상각율을 계산합니다 </div>
                     </div>
                     </div>
                 </div>

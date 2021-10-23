@@ -33,7 +33,7 @@ export const getFilteredProductListDispatch = (filter) => {
     return async dispatch => {
 
         try{
-            const oemSortedProductList = await axios.get( process.env.REACT_APP_API_URL + "/product/list", {params: parameter} )
+            const oemSortedProductList = await axios.get( process.env.REACT_APP_API_DEV_URL + "/product/list", {params: parameter} )
             return dispatch(fetchOemSortedProductListSuccess(oemSortedProductList.data));
         }catch (error){
             console.log(error)

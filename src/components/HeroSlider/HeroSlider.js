@@ -21,7 +21,7 @@ class HeroSlider extends Component {
   getHeroSliderData() {
     axios
         .get(process.env.PUBLIC_URL + "/data/hero-slider.json")
-        //      .get(process.env.REACT_APP_API_URL + "/display/banner?display_area=home")
+        //      .get(process.env.REACT_APP_API_DEV_URL + "/display/banner?display_area=home")
       .then(response =>
         this.setState({
           heroSliderData: response.data,

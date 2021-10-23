@@ -10,6 +10,7 @@ import { getFilteredProductListDispatch } from "../../redux/actions/oemProductLi
 import {getFilter} from "../../helpers/filter";
 import {changeFilterDataDispatch} from "../../redux/actions/filterActions";
 import {setDetailParam} from "../../redux/actions/detailParamActions";
+import commaNumber from "../../utils/commaNumber";
 
 
 class OmdProductList extends Component {
@@ -46,93 +47,117 @@ class OmdProductList extends Component {
 
 
     return (
-      <div className="shop-products-area">
-        {/* shop layout switcher */}
-        {/*<div className="shop-layout-switcher text-right space-mt--15 space-mb--15">*/}
-        {/*  <div className="container">*/}
-        {/*    <div className="dropdown-container">*/}
-        {/*      <DropdownButton*/}
-        {/*              className="btn-primary"*/}
-        {/*              size="sm"*/}
-        {/*              title="정렬"*/}
-        {/*          >*/}
-        {/*            {*/}
-        {/*              sortingList && sortingList.map(single => {*/}
+        <div>
+        {omdProductList.map(single => {
+          let param={
+            product_group_id:single.PRODUCT_GROUP_ID,
+            product_id:single.PRODUCT_ID,
+            color_hex:single.COLOR_HEX
+          }
 
-        {/*                return(*/}
-        {/*                    <Dropdown.Item onClick={() => {*/}
-        {/*                      setSortingFilter(single.CODE_VALUE2, single.CODE_VALUE3, filter)*/}
+          let icon=''
+          let discountCode = ''
 
-        {/*                    }*/}
-        {/*                    } >{single.CODE_VALUE1}</Dropdown.Item>*/}
-        {/*                )*/}
-        {/*              })*/}
-        {/*            }*/}
-        {/*      </DropdownButton>*/}
-        {/*      <div className="list-count">*/}
-        {/*        총 {totalCount}개*/}
-        {/*      </div>*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
+          switch(single.OMD_CODE){
 
-        {/* shop list products */}
-        <div
-          className={`shop-list-products-wrapper ${
-            listActivate ? "d-block" : "d-none"
-          }`}
-        >
-          {omdProductList &&
-          omdProductList.map(single => {
+            case 'COUPANG' :
+              icon = 'Coupang_logo.png';
+              break;
 
-              let param={
-                    product_group_id:single.PRODUCT_GROUP_ID,
-                    product_id:single.PRODUCT_ID,
-                    color_hex:single.COLOR_HEX
-              }
+            case '11ST' :
+              icon = '11st_logo.png';
+              break;
 
-            return (
+            case 'SSG' :
+              icon = 'SSG_logo.png';
+              break;
 
-                  <a onClick={() => {
-                    this.props.setDetailParam(param)
-                    this.routeChange(single)
-                  }}>
+            case 'APPLE' :
+              icon = 'Apple_logo.png';
+              break;
 
-                  <div className="container">
-                    <div
-                      className="list-product"
-                      key={single.id}
-                    >
+            case 'HIMART' :
+              icon = 'Himart_logo.png';
+              break;
 
-                      {/*<Link to={process.env.PUBLIC_URL + `/product/${single.id}`}>*/}
-                      <span className="thumb">
+            case 'AGENCY' :
+              icon = 'Agency_logo.png';
+              break;
+
+            case 'SAMSUNG' :
+              icon = 'Samsung_logo.png';
+              break;
+
+
+            default :
+              break;
+
+          }
+
+          switch(single.DISCOUNT_CODE) {
+
+            case 'BASIC' :
+              discountCode = '기본';
+              break;
+
+            case 'CARD' :
+              discountCode = '카드할인';
+              break;
+
+            default :
+              break;
+          }
+
+
+          return (
+              <a className = "list-a-style" onClick={() => {
+                this.props.setDetailParam(param)
+                this.routeChange(single)
+              }}>
+                <div className="list-detail-container">
+                  <div className="container-large">
+                    <div className="col">
+                      <div className="listName border-bottom">{single.PRODUCT_GROUP_NAME}</div>
+                      <div className="d-flex justify-content-around">
+                        <div className="logo-image">
                           <img
-                              src={process.env.REACT_APP_S3_URL + `${single.IMAGE_URL}`}
-                              className="thumb__image"
-                              alt=""
-                          />
-                      </span>
-                      {/*</Link>*/}
-
-                      <div className="list-product__content">
-                        <h3 className="title">
-
-                            {single.PRODUCT_GROUP_NAME}
-
-                        </h3>
+                            src={process.env.REACT_APP_S3_URL + `${single.IMAGE_URL}`}
+                            className="img-fluid-list" />
+                        </div>
+                        <div className="list-row-list">
+                          <div className="list-row-big-center">최저가몰</div>
+                          <div className="list-row-big-center">최저가</div>
+                          <div className="list-row-big-center">할인방법</div>
+                        </div>
+                        <div className="list-row-list">
+                          <div className="list-logo">
+                            <img src={process.env.PUBLIC_URL + `/assets/img/icons/${icon}`} className="list-img-fluid-logo" alt=""/>
+                          </div>
+                          <div className="list-row-big-right">{commaNumber(single.PRICE) + "원 "}</div>
+                          <div className="list-row-big-right">{discountCode}
+                            {/*<div className="list-row-small">(A급)</div>*/}
+                          </div>
+                        </div>
                       </div>
+                      {single.AGENCY_PRICE?(
+                              <div className="list-price-compare"> " 주변 통신사 공식대리점 보다 {commaNumber(single.AGENCY_PRICE-single.PRICE) + "원 "} 저렴 "</div>
+                      )
+                      :
+                          (
+                              <div className="list-price-compare"> " 클릭하여 가격을 비교하세요 "</div>
+                          )
+                      }
+
                     </div>
                   </div>
-
-                  </a>
-
-                //</Link>
-              );
-            }
-            )}
+                </div>
+              </a>
+          )
+        }
+        )
+        }
         </div>
-      </div>
-    );
+    )
   }
 }
 
@@ -153,9 +178,6 @@ const mapStateToProps = state => {
     sortingList: getsortingLists(
         state.sortingListData.sortingList,
         state.filterData.filter.plan_type_list
-    ),
-    filter: getFilter(
-        state.filterData.filter
     )
   };
 };
@@ -171,9 +193,6 @@ const mapDispatchToProps = dispatch => {
       }
 
       dispatch(changeFilterDataDispatch('sorting', data));
-    },
-    getFilteredProductList: (filter) => {
-      dispatch(getFilteredProductListDispatch(filter,));
     },
 
     setDetailParam: (param) => {

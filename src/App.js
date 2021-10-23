@@ -27,7 +27,7 @@ function App() {
             <AppRoute
               path={process.env.PUBLIC_URL + "/"}
               exact
-              component={CarrierList}
+              component={OmdList}
               layout={DefaultLayout}
             />
             <AppRoute
@@ -59,6 +59,11 @@ function App() {
             <AppRoute
                 path={process.env.PUBLIC_URL + "/estimate/:id"}
                 component={Estimate}
+                layout={DefaultLayout}
+            />
+            <AppRoute
+                path={process.env.PUBLIC_URL + "/carrierList"}
+                component={CarrierList}
                 layout={DefaultLayout}
             />
             <AppRoute

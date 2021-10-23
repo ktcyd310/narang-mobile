@@ -49,7 +49,7 @@ class Product extends Component {
 
   getChildProductData() {
     axios
-        .get(process.env.REACT_APP_API_URL + "/product/detail", {params: this.props.detailParam})
+        .get(process.env.REACT_APP_API_DEV_URL + "/product/detail", {params: this.props.detailParam})
 
         .then(response =>
             this.setState({ data: response.data, isLoading: false })
